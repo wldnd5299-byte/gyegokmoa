@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import type { Metadata } from "next";
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -31,37 +30,7 @@ type ValleyDetailPageProps = {
     slug: string;
   }>;
 };
-export async function generateMetadata({
-  params,
-}: ValleyDetailPageProps): Promise<Metadata> {
-  const { slug } = await params;
 
-  const valley = await getPublishedValleyBySlug(slug);
-
-  if (!valley) {
-    return {
-      title: "계곡 정보",
-    };
-  }
-
-  const description =
-    valley.summary ||
-    `${valley.region} ${valley.city}에 위치한 ${valley.name}의 위치, 주차, 화장실, 편의시설 정보를 확인하세요.`;
-
-  return {
-    title: valley.name,
-    description,
-
-    openGraph: {
-      title: `${valley.name} | 계곡모아`,
-      description,
-      type: "website",
-      images: valley.image_url
-        ? [{ url: valley.image_url }]
-        : undefined,
-    },
-  };
-}
 export default async function ValleyDetailPage({
   params,
 }: ValleyDetailPageProps) {
