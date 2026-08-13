@@ -9,6 +9,7 @@ import {
   Upload,
 } from "lucide-react";
 
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 import ValleyLocationPicker from "@/components/ValleyLocationPicker";
@@ -35,7 +36,23 @@ export default async function AdminPage({
     : params.error;
 
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
+  if (!user) {
+    redirect("/admin/login");
+  }
+
+  const { data: adminUser, error: adminError } = await supabase
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (adminError || !adminUser) {
+    redirect("/admin/login");
+  }
   const {
     data: valleys,
     error,
