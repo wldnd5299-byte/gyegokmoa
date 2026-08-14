@@ -13,6 +13,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 import ValleyLocationPicker from "@/components/ValleyLocationPicker";
+import ValleyContentGenerator from "@/components/ValleyContentGenerator";
 import AdminValleyList from "@/components/AdminValleyList";
 
 type AdminPageProps = {
@@ -806,30 +807,7 @@ export default async function AdminPage({
                 </small>
               </label>
 
-              <label className="admin-full-field">
-                <span>간단 소개 *</span>
-
-                <textarea
-                  name="summary"
-                  rows={5}
-                  placeholder="계곡의 특징과 방문하기 좋은 이유를 간단하게 적어 주세요."
-                  required
-                />
-              </label>
-
-              <label className="admin-full-field">
-                <span>특징 태그</span>
-
-                <input
-                  type="text"
-                  name="tags"
-                  placeholder="예: 가족추천, 주차가능, 물놀이"
-                />
-
-                <small>
-                  태그는 쉼표로 구분해 주세요.
-                </small>
-              </label>
+             <ValleyContentGenerator />
             </div>
 
             <div className="admin-option-section">
