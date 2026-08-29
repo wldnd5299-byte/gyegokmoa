@@ -48,6 +48,7 @@ interface KakaoMapProps {
       longitude: number;
     }
   ) => void;
+    courseMode?: boolean;
 }
 
 declare global {
