@@ -1,0 +1,230 @@
+/* ==================================================
+   엄마랑 아빠랑 - NEW HEADER
+================================================== */
+
+.parent-site-header {
+  position: relative;
+  z-index: 100;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.97);
+  border-bottom: 1px solid #ecebe6;
+}
+
+.parent-header-inner {
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+}
+
+/* 브랜드 */
+
+.parent-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  color: #173e32;
+  text-decoration: none;
+}
+
+.parent-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.parent-brand-text strong {
+  font-size: 25px;
+  line-height: 1.1;
+  letter-spacing: -1.3px;
+  font-weight: 900;
+}
+
+.parent-brand-text span {
+  margin-top: 5px;
+  color: #8a877e;
+  font-size: 10px;
+  letter-spacing: -0.2px;
+}
+
+/* 간단한 부모님 심볼 */
+
+.parent-brand-symbol {
+  position: relative;
+  width: 43px;
+  height: 38px;
+}
+
+.parent-symbol-head {
+  position: absolute;
+  top: 1px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #b88451;
+  border-radius: 50%;
+}
+
+.parent-symbol-head-one {
+  left: 7px;
+}
+
+.parent-symbol-head-two {
+  right: 7px;
+  border-color: #547764;
+}
+
+.parent-symbol-line {
+  position: absolute;
+  bottom: 5px;
+  width: 24px;
+  height: 18px;
+  border: 2px solid;
+  border-top: 0;
+  border-radius: 0 0 24px 24px;
+}
+
+.parent-symbol-line-one {
+  left: 0;
+  border-color: #b88451;
+  transform: rotate(-25deg);
+}
+
+.parent-symbol-line-two {
+  right: 0;
+  border-color: #547764;
+  transform: rotate(25deg);
+}
+
+/* PC 메뉴 */
+
+.parent-desktop-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(20px, 2.2vw, 38px);
+  margin-left: auto;
+}
+
+.parent-desktop-nav > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #202a26;
+  font-size: 15px;
+  font-weight: 750;
+  white-space: nowrap;
+  text-decoration: none;
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.parent-desktop-nav > a:hover {
+  color: #3f6c5b;
+  transform: translateY(-1px);
+}
+
+.parent-header-icon-link {
+  color: #315b4c !important;
+}
+
+.parent-header-search {
+  width: 39px;
+  height: 39px;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.parent-header-search:hover {
+  background: #f3f5f1;
+}
+
+/* 모바일 */
+
+.parent-mobile-menu-button {
+  display: none;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: #f4f5f1;
+  color: #173e32;
+  cursor: pointer;
+}
+
+.parent-mobile-navigation {
+  display: none;
+}
+
+@media (max-width: 980px) {
+  .parent-header-inner {
+    min-height: 70px;
+  }
+
+  .parent-desktop-nav {
+    display: none;
+  }
+
+  .parent-mobile-menu-button {
+    display: inline-flex;
+  }
+
+  .parent-mobile-navigation {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border-top: 1px solid #eeeeea;
+    border-bottom: 1px solid #e6e7e2;
+    box-shadow: 0 14px 30px rgba(35, 48, 41, 0.08);
+  }
+
+  .parent-mobile-navigation-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .parent-mobile-navigation-inner a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 10px;
+    color: #24352e;
+    font-size: 14px;
+    font-weight: 750;
+    text-decoration: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .parent-header-inner {
+    min-height: 64px;
+  }
+
+  .parent-brand {
+    gap: 8px;
+  }
+
+  .parent-brand-text strong {
+    font-size: 21px;
+  }
+
+  .parent-brand-text span {
+    display: none;
+  }
+
+  .parent-brand-symbol {
+    width: 35px;
+    height: 32px;
+    transform: scale(0.85);
+    transform-origin: left center;
+  }
+}

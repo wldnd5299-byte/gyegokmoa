@@ -1,0 +1,1510 @@
+/* =========================================================
+   엄마랑 아빠랑 - NEW HOME DESIGN
+   ========================================================= */
+
+.parent-home {
+  background: #fff;
+  color: #18352c;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.parent-hero {
+  padding: 52px 0 28px;
+  background:
+    linear-gradient(
+      135deg,
+      #fbf8f1 0%,
+      #fffdf9 58%,
+      #f4f7f2 100%
+    );
+}
+
+.parent-hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1.08fr);
+  align-items: stretch;
+  gap: 52px;
+}
+
+.parent-hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 455px;
+  padding: 24px 0;
+}
+
+.parent-hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 20px;
+  color: #9b6e43;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+.parent-hero-kicker::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  margin-right: 10px;
+  background: #b98758;
+}
+
+.parent-hero-copy h1 {
+  margin: 0;
+  color: #183b31;
+  font-size: clamp(48px, 4.2vw, 70px);
+  line-height: 1.12;
+  letter-spacing: -3.4px;
+  font-weight: 900;
+}
+
+.parent-hero-copy h1 em {
+  color: #bb7b49;
+  font-style: normal;
+}
+
+.parent-hero-copy > p {
+  margin: 24px 0 0;
+  color: #6e746f;
+  font-size: 17px;
+  line-height: 1.8;
+  letter-spacing: -0.5px;
+}
+
+
+/* 검색 */
+
+.parent-hero-search {
+  width: 100%;
+  max-width: 620px;
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+  padding: 7px 7px 7px 20px;
+  background: #fff;
+  border: 1px solid #dedfd9;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(49, 67, 58, 0.08);
+}
+
+.parent-hero-search > svg {
+  flex-shrink: 0;
+  color: #8d9791;
+}
+
+.parent-hero-search input {
+  flex: 1;
+  min-width: 0;
+  height: 46px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #263a32;
+  font-size: 15px;
+}
+
+.parent-hero-search input::placeholder {
+  color: #9ba19e;
+}
+
+.parent-hero-search button {
+  flex-shrink: 0;
+  height: 48px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 13px;
+  background: #315e4e;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+
+/* 오른쪽 메인 비주얼 */
+
+.parent-hero-visual {
+  position: relative;
+  min-height: 455px;
+  overflow: hidden;
+  border-radius: 34px 8px 34px 34px;
+
+  /*
+    다음 단계에서 실제 사진을 연결합니다.
+    지금은 사진이 없어도 디자인 확인이 가능하도록
+    배경을 만들어 둔 상태입니다.
+  */
+  background:
+    radial-gradient(
+      circle at 72% 24%,
+      rgba(255,255,255,.75) 0 7%,
+      transparent 7.5%
+    ),
+    linear-gradient(
+      145deg,
+      #dce8dd 0%,
+      #b9cfbd 38%,
+      #789584 100%
+    );
+
+  box-shadow: 0 22px 55px rgba(38, 66, 52, 0.15);
+}
+
+.parent-hero-visual::before {
+  content: "";
+  position: absolute;
+  width: 310px;
+  height: 310px;
+  right: -60px;
+  top: -70px;
+  border-radius: 50%;
+  background: rgba(255, 248, 229, 0.45);
+}
+
+.parent-hero-visual::after {
+  content: "";
+  position: absolute;
+  left: -30px;
+  bottom: -120px;
+  width: 430px;
+  height: 250px;
+  border-radius: 50%;
+  background: rgba(61, 101, 77, 0.34);
+  transform: rotate(-10deg);
+}
+
+.parent-hero-visual-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      180deg,
+      transparent 35%,
+      rgba(21, 49, 39, 0.58) 100%
+    );
+}
+
+.parent-hero-visual-message {
+  position: absolute;
+  z-index: 2;
+  left: 34px;
+  bottom: 32px;
+  color: #fff;
+}
+
+.parent-hero-visual-message span {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  backdrop-filter: blur(8px);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.parent-hero-visual-message strong {
+  display: block;
+  font-size: 28px;
+  line-height: 1.35;
+  letter-spacing: -1.2px;
+}
+
+
+/* =========================================================
+   사진형 카테고리
+   ========================================================= */
+
+.parent-category-section {
+  padding: 24px 0 38px;
+  background: #fff;
+}
+
+.parent-category-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.parent-category-card {
+  position: relative;
+  min-height: 178px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  isolation: isolate;
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.parent-category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(30, 49, 40, 0.13);
+}
+
+.parent-category-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  transition: transform .35s ease;
+}
+
+.parent-category-card:hover::before {
+  transform: scale(1.04);
+}
+
+
+/* 현재는 사진 연결 전 임시 배경 */
+
+.category-attraction::before {
+  background:
+    linear-gradient(145deg, #718d70, #b8cba7);
+}
+
+.category-restaurant::before {
+  background:
+    linear-gradient(145deg, #8f5f42, #d8a46f);
+}
+
+.category-cafe::before {
+  background:
+    linear-gradient(145deg, #766556, #c7a98d);
+}
+
+.category-stay::before {
+  background:
+    linear-gradient(145deg, #667b82, #b7cacd);
+}
+
+.category-gift::before {
+  background:
+    linear-gradient(145deg, #a87d69, #e0bda8);
+}
+
+.parent-category-shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12, 27, 21, 0.04) 10%,
+      rgba(14, 30, 23, 0.72) 100%
+    );
+}
+
+.parent-category-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,.9);
+  color: #315e4e;
+}
+
+.parent-category-card > div:last-child {
+  color: #fff;
+}
+
+.parent-category-card strong {
+  display: block;
+  font-size: 20px;
+  letter-spacing: -0.7px;
+}
+
+.parent-category-card p {
+  margin: 6px 0 0;
+  color: rgba(255,255,255,.84);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   BIG MAP BANNER
+   ========================================================= */
+
+.parent-map-section {
+  padding: 8px 0 42px;
+}
+
+.parent-map-banner {
+  position: relative;
+  min-height: 215px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 38px 44px;
+  border: 1px solid #d9e3dc;
+  border-radius: 26px;
+  background:
+    linear-gradient(
+      110deg,
+      #eef5f0 0%,
+      #f5f8f4 43%,
+      #e5eee6 100%
+    );
+  color: #1c3b30;
+  text-decoration: none;
+}
+
+.parent-map-content {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.parent-map-icon {
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 18px;
+  background: #315e4e;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(49, 94, 78, .18);
+}
+
+.parent-map-content strong {
+  display: block;
+  font-size: 25px;
+  line-height: 1.25;
+  letter-spacing: -1px;
+}
+
+.parent-map-content p {
+  margin: 9px 0 17px;
+  color: #687b72;
+  font-size: 14px;
+}
+
+.parent-map-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 15px;
+  border-radius: 999px;
+  background: #fff;
+  color: #315e4e;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(39, 66, 53, .07);
+}
+
+
+/* 지도 장식 */
+
+.parent-map-decoration {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  opacity: .85;
+}
+
+.map-road {
+  position: absolute;
+  display: block;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.9);
+  box-shadow: 0 0 0 1px rgba(94, 121, 106, .08);
+}
+
+.road-one {
+  width: 430px;
+  right: -60px;
+  top: 48px;
+  transform: rotate(-16deg);
+}
+
+.road-two {
+  width: 380px;
+  right: 40px;
+  bottom: 55px;
+  transform: rotate(18deg);
+}
+
+.road-three {
+  width: 250px;
+  right: 170px;
+  top: 104px;
+  transform: rotate(64deg);
+}
+
+.fake-map-pin {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  padding: 5px;
+  border-radius: 50% 50% 50% 0;
+  background: #fff;
+  color: #b97848;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,.12));
+}
+
+.pin-one {
+  right: 18%;
+  top: 28%;
+}
+
+.pin-two {
+  right: 37%;
+  bottom: 22%;
+  color: #426e5d;
+}
+
+.pin-three {
+  right: 6%;
+  bottom: 26%;
+  color: #8a6e53;
+}
+
+.pin-four {
+  right: 28%;
+  top: 13%;
+  color: #bf7e4a;
+}
+
+
+/* =========================================================
+   추천 코스
+   ========================================================= */
+
+.parent-course-section {
+  padding: 58px 0;
+  background: #f1f4ee;
+}
+
+.parent-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 22px;
+}
+
+.parent-section-heading > div > span {
+  display: block;
+  margin-bottom: 8px;
+  color: #ad7445;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.parent-section-heading h2 {
+  margin: 0;
+  color: #17382e;
+  font-size: 28px;
+  letter-spacing: -1.2px;
+}
+
+.parent-section-heading p {
+  margin: 7px 0 0;
+  color: #788079;
+  font-size: 14px;
+}
+
+.parent-section-heading > a {
+  display: inline-flex;
+  align-items: center;
+  color: #66736c;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.parent-course-card {
+  min-height: 205px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 34px 40px;
+  border: 1px solid #e2e5df;
+  border-radius: 25px;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+}
+
+.parent-course-badge {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #b46f3e;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.parent-course-card h3 {
+  margin: 0;
+  color: #183a30;
+  font-size: 27px;
+  line-height: 1.3;
+  letter-spacing: -1px;
+}
+
+.parent-course-card p {
+  margin: 10px 0 0;
+  color: #7b827e;
+  font-size: 14px;
+}
+
+.parent-course-flow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.parent-course-flow span {
+  padding: 10px 15px;
+  border-radius: 999px;
+  background: #f2f5f1;
+  color: #42584e;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   부모님 선물 / 핫딜
+   ========================================================= */
+
+.parent-gift-section {
+  padding: 42px 0 70px;
+  background: #fff;
+}
+
+.parent-gift-banner {
+  min-height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 34px 40px;
+  border-radius: 25px;
+  background:
+    linear-gradient(
+      120deg,
+      #fff5e9 0%,
+      #fffaf4 55%,
+      #f6eee3 100%
+    );
+  color: #263c34;
+  text-decoration: none;
+}
+
+.parent-gift-banner span {
+  display: block;
+  margin-bottom: 8px;
+  color: #b57442;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.parent-gift-banner h2 {
+  margin: 0;
+  font-size: 27px;
+  line-height: 1.35;
+  letter-spacing: -1px;
+}
+
+.parent-gift-banner p {
+  margin: 10px 0 0;
+  color: #817a72;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .parent-hero-inner {
+    grid-template-columns: 1fr 0.9fr;
+    gap: 28px;
+  }
+
+  .parent-hero-copy {
+    min-height: 390px;
+  }
+
+  .parent-hero-visual {
+    min-height: 390px;
+  }
+
+  .parent-hero-copy h1 {
+    font-size: 48px;
+  }
+
+  .parent-category-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .parent-category-card:nth-child(4),
+  .parent-category-card:nth-child(5) {
+    min-height: 150px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+  .parent-hero {
+    padding: 24px 0 18px;
+  }
+
+  .parent-hero-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .parent-hero-copy {
+    min-height: auto;
+    padding: 10px 0 0;
+  }
+
+  .parent-hero-kicker {
+    margin-bottom: 13px;
+    font-size: 12px;
+  }
+
+  .parent-hero-copy h1 {
+    font-size: 39px;
+    line-height: 1.15;
+    letter-spacing: -2.2px;
+  }
+
+  .parent-hero-copy > p {
+    margin-top: 15px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .parent-hero-search {
+    min-height: 56px;
+    margin-top: 22px;
+    padding-left: 15px;
+    border-radius: 15px;
+  }
+
+  .parent-hero-search button {
+    height: 43px;
+    padding: 0 17px;
+  }
+
+  .parent-hero-visual {
+    min-height: 255px;
+    border-radius: 22px;
+  }
+
+  .parent-hero-visual-message {
+    left: 22px;
+    bottom: 21px;
+  }
+
+  .parent-hero-visual-message strong {
+    font-size: 22px;
+  }
+
+
+  /* 모바일 카테고리는 가로 스와이프 */
+
+  .parent-category-section {
+    padding: 10px 0 28px;
+  }
+
+  .parent-category-grid {
+    display: flex;
+    gap: 11px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+  }
+
+  .parent-category-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .parent-category-card {
+    flex: 0 0 68%;
+    min-height: 155px !important;
+    scroll-snap-align: start;
+  }
+
+
+  /* 지도 */
+
+  .parent-map-section {
+    padding-bottom: 30px;
+  }
+
+  .parent-map-banner {
+    min-height: 235px;
+    align-items: flex-start;
+    padding: 28px 24px;
+    border-radius: 22px;
+  }
+
+  .parent-map-content {
+    gap: 14px;
+  }
+
+  .parent-map-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+  }
+
+  .parent-map-content strong {
+    font-size: 20px;
+  }
+
+  .parent-map-content p {
+    max-width: 230px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .parent-map-decoration {
+    width: 80%;
+    opacity: .5;
+  }
+
+
+  /* 추천코스 */
+
+  .parent-course-section {
+    padding: 42px 0;
+  }
+
+  .parent-section-heading {
+    align-items: flex-start;
+  }
+
+  .parent-section-heading h2 {
+    font-size: 24px;
+  }
+
+  .parent-course-card {
+    min-height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 27px 24px;
+  }
+
+  .parent-course-card h3 {
+    font-size: 24px;
+  }
+
+  .parent-course-flow {
+    margin-top: 8px;
+  }
+
+
+  /* 선물 */
+
+  .parent-gift-section {
+    padding: 28px 0 48px;
+  }
+
+  .parent-gift-banner {
+    min-height: 175px;
+    padding: 27px 24px;
+  }
+
+  .parent-gift-banner h2 {
+    font-size: 23px;
+  }
+}
+/* =========================================================
+   HOME 실제 이미지 연결
+   ========================================================= */
+
+/* 메인 히어로 */
+.parent-hero-visual {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(15, 40, 31, 0.02) 25%,
+      rgba(15, 40, 31, 0.62) 100%
+    ),
+    url("/images/home/hero-family.jpg");
+
+  background-size: cover;
+  background-position: center;
+}
+
+/* 기존 추상 장식 제거 */
+.parent-hero-visual::before,
+.parent-hero-visual::after {
+  display: none;
+}
+
+
+/* 가볼만한 곳 */
+.category-attraction::before {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(15, 30, 23, 0.01) 35%,
+      rgba(15, 30, 23, 0.48) 100%
+    ),
+    url("/images/home/category-attraction.png");
+
+  background-size: cover;
+  background-position: center;
+}
+
+
+/* 맛집 */
+.category-restaurant::before {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(15, 30, 23, 0.01) 35%,
+      rgba(15, 30, 23, 0.48) 100%
+    ),
+    url("/images/home/category-restaurant.png");
+
+  background-size: cover;
+  background-position: center;
+}
+
+
+/* 카페 */
+.category-cafe::before {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(15, 30, 23, 0.01) 35%,
+      rgba(15, 30, 23, 0.48) 100%
+    ),
+    url("/images/home/category-cafe.png");
+
+  background-size: cover;
+  background-position: center;
+}
+
+
+/* 숙소 */
+.category-stay::before {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(15, 30, 23, 0.01) 35%,
+      rgba(15, 30, 23, 0.48) 100%
+    ),
+    url("/images/home/category-accommodation.png");
+
+  background-size: cover;
+  background-position: center;
+}
+
+
+/* 부모님 선물 */
+.category-gift::before {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(15, 30, 23, 0.01) 35%,
+      rgba(15, 30, 23, 0.48) 100%
+    ),
+    url("/images/home/category-gift.png");
+
+  background-size: cover;
+  background-position: center;
+}/* =========================================================
+   REGION TABS - FINAL
+   ========================================================= */
+
+.region-tabs-shell {
+  position: relative;
+  width: 100%;
+}
+
+.region-tabs-scroll {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  overflow-x: auto;
+  padding: 12px 48px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.region-tabs-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.region-tab {
+  flex: 0 0 auto;
+  min-height: 38px;
+  padding: 0 17px;
+  border: 0;
+  border-radius: 999px;
+  background: #f3f3ef;
+  color: #626a65;
+  font-size: 13px;
+  font-weight: 750;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.region-tab:hover {
+  background: #e8eee9;
+  color: #315e4e;
+}
+
+.region-tab.active {
+  background: #315e4e;
+  color: #ffffff;
+}
+
+.region-arrow {
+  position: absolute;
+  z-index: 20;
+  top: 50%;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 1px solid #e0e3de;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #315e4e;
+  box-shadow: 0 5px 16px rgba(31, 53, 43, 0.14);
+  cursor: pointer;
+}
+
+.region-arrow-left {
+  left: 3px;
+}
+
+.region-arrow-right {
+  right: 3px;
+}
+
+.region-arrow:hover {
+  background: #f4f7f4;
+}
+
+/* 양쪽 버튼 뒤쪽을 살짝 가려서
+   다음 지역이 있다는 느낌을 줌 */
+
+.region-tabs-shell::before,
+.region-tabs-shell::after {
+  content: "";
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  bottom: 0;
+  width: 46px;
+  pointer-events: none;
+}
+
+.region-tabs-shell::before {
+  left: 0;
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff 25%,
+      rgba(255, 255, 255, 0)
+    );
+}
+
+.region-tabs-shell::after {
+  right: 0;
+  background:
+    linear-gradient(
+      270deg,
+      #ffffff 25%,
+      rgba(255, 255, 255, 0)
+    );
+}
+
+
+/* 모바일 */
+
+@media (max-width: 760px) {
+  .region-tabs-scroll {
+    gap: 7px;
+    padding: 10px 16px;
+    scroll-snap-type: x proximity;
+  }
+
+  .region-tab {
+    min-height: 36px;
+    padding: 0 15px;
+    font-size: 12px;
+    scroll-snap-align: start;
+  }
+
+  .region-arrow {
+    display: none;
+  }
+
+  .region-tabs-shell::before,
+  .region-tabs-shell::after {
+    display: none;
+  }
+}
+
+/* ==================================================
+   PC WIDE LAYOUT
+   모바일/태블릿은 기존 디자인 유지
+================================================== */
+
+@media (min-width: 1100px) {
+  .parent-home .container {
+    width: calc(100% - 80px);
+    max-width: 1360px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* HERO */
+  .parent-hero-inner {
+    min-height: 520px;
+    gap: 70px;
+  }
+
+  .parent-hero-copy {
+    flex: 1;
+    max-width: 620px;
+  }
+
+  .parent-hero-copy h1 {
+    font-size: clamp(48px, 4vw, 66px);
+    line-height: 1.08;
+  }
+
+  .parent-hero-copy > p {
+    font-size: 17px;
+    line-height: 1.8;
+  }
+
+  .parent-hero-search {
+    max-width: 620px;
+  }
+
+  .parent-hero-visual {
+    flex: 0 0 560px;
+    min-height: 410px;
+  }
+
+  /* 상단 카테고리 5개 */
+  .parent-category-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .parent-category-card {
+    min-height: 190px;
+  }
+
+  /* 지도 배너 */
+  .parent-map-banner {
+    min-height: 210px;
+  }
+
+  /* 장소 추천 카드 */
+  .parent-place-grid,
+  .home-place-scroll {
+    gap: 18px;
+  }
+
+  .home-place-card {
+    min-width: 0;
+  }
+
+  /* 추천코스 */
+  .parent-course-card {
+    min-height: 250px;
+  }
+
+  /* 부모님 선물 */
+  .parent-gift-banner {
+    min-height: 220px;
+  }
+}
+
+
+/* 큰 모니터 */
+@media (min-width: 1600px) {
+  .parent-home .container {
+    width: calc(100% - 120px);
+    max-width: 1440px;
+  }
+}
+/* ==================================================
+   HOME PC LOWER CONTENT ENLARGE
+   메인 중단 이하 PC 확대
+   모바일 유지
+================================================== */
+
+@media (min-width: 1200px) {
+
+  /* =========================================
+     장소 추천 섹션
+  ========================================= */
+
+  .home-content-section {
+    padding-top: 34px;
+    padding-bottom: 34px;
+  }
+
+  .home-content-section .container {
+    width: calc(100% - 64px);
+    max-width: 1680px;
+  }
+
+  .home-section-heading {
+    margin-bottom: 22px;
+  }
+
+  .home-section-heading h2 {
+    font-size: 28px;
+    line-height: 1.25;
+  }
+
+  .home-section-heading p {
+    margin-top: 7px;
+
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .home-section-heading > a {
+    font-size: 13px;
+  }
+
+
+  /* =========================================
+     장소 카드 4개
+  ========================================= */
+
+  .home-place-scroll {
+    gap: 22px;
+  }
+
+  .home-place-card {
+    flex:
+      0 0
+      calc(
+        (100% - 66px) / 4
+      );
+
+    min-width: 0;
+
+    border-radius: 20px;
+  }
+
+  .home-place-image {
+    min-height: 280px;
+  }
+
+  .home-place-info {
+    padding: 20px 20px 22px;
+  }
+
+  .home-place-region {
+    font-size: 12px;
+  }
+
+  .home-place-info > strong {
+    margin-top: 8px;
+
+    font-size: 20px;
+    line-height: 1.35;
+  }
+
+  .home-place-info > p {
+    margin-top: 10px;
+
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+
+  /* =========================================
+     데이터 없는 맛집 / 카페 / 숙소
+     불필요하게 큰 공백 제거
+  ========================================= */
+
+  .home-empty-section {
+    min-height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 18px 20px;
+
+    font-size: 13px;
+  }
+
+  /*
+   * 빈 섹션은 전체 높이도 줄임
+   */
+  .home-content-section:has(
+    .home-empty-section
+  ) {
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+
+  .home-content-section:has(
+    .home-empty-section
+  )
+  .home-section-heading {
+    margin-bottom: 8px;
+  }
+
+
+  /* =========================================
+     추천코스
+  ========================================= */
+
+  .parent-course-section {
+    padding-top: 58px;
+    padding-bottom: 64px;
+  }
+
+  .parent-course-section .container {
+    width: calc(100% - 64px);
+    max-width: 1680px;
+  }
+
+  .parent-section-heading {
+    margin-bottom: 24px;
+  }
+
+  .parent-section-heading h2 {
+    font-size: 30px;
+    line-height: 1.25;
+  }
+
+  .parent-section-heading p {
+    margin-top: 8px;
+
+    font-size: 14px;
+  }
+
+  .parent-course-card {
+    min-height: 300px;
+
+    padding: 46px 50px;
+
+    border-radius: 24px;
+  }
+
+  .parent-course-card h3 {
+    font-size: 30px;
+    line-height: 1.3;
+  }
+
+  .parent-course-card p {
+    max-width: 600px;
+
+    margin-top: 13px;
+
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .parent-course-flow {
+    gap: 12px;
+  }
+
+  .parent-course-flow span {
+    min-height: 38px;
+
+    padding: 0 14px;
+
+    font-size: 12px;
+  }
+
+
+  /* =========================================
+     부모님 선물
+  ========================================= */
+
+  .parent-gift-section {
+    padding-top: 48px;
+    padding-bottom: 70px;
+  }
+
+  .parent-gift-section .container {
+    width: calc(100% - 64px);
+    max-width: 1680px;
+  }
+
+  .parent-gift-banner {
+    min-height: 270px;
+
+    padding: 44px 50px;
+
+    border-radius: 24px;
+  }
+
+  .parent-gift-banner h2 {
+    font-size: 30px;
+    line-height: 1.3;
+  }
+
+  .parent-gift-banner p {
+    margin-top: 11px;
+
+    font-size: 14px;
+    line-height: 1.65;
+  }
+}
+
+
+/* ==================================================
+   LARGE PC
+================================================== */
+
+@media (min-width: 1600px) {
+
+  .home-content-section .container,
+  .parent-course-section .container,
+  .parent-gift-section .container {
+    width: calc(100% - 80px);
+    max-width: 1760px;
+  }
+
+  .home-place-image {
+    min-height: 300px;
+  }
+
+  .home-place-info > strong {
+    font-size: 21px;
+  }
+
+  .parent-course-card {
+    min-height: 320px;
+  }
+
+  .parent-gift-banner {
+    min-height: 285px;
+  }
+}
+/* ==================================================
+   HOME PC WIDTH UNIFY
+   메인 전체 좌우 기준선 통일
+================================================== */
+
+@media (min-width: 1200px) {
+  .parent-home .container,
+  .home-region-section .container,
+  .home-content-section .container,
+  .parent-course-section .container,
+  .parent-gift-section .container {
+    width: calc(100% - 64px);
+    max-width: 1680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 1600px) {
+  .parent-home .container,
+  .home-region-section .container,
+  .home-content-section .container,
+  .parent-course-section .container,
+  .parent-gift-section .container {
+    width: calc(100% - 80px);
+    max-width: 1760px;
+  }
+}
+.parent-hero-title-break {
+  display: none;
+}
+
+/* 모바일에서는 다시 두 줄 */
+@media (max-width: 760px) {
+  .parent-hero-title-break {
+    display: block;
+  }
+}
+/* 메인 히어로 제목 - PC 한 줄 */
+@media (min-width: 1000px) {
+  .parent-hero-copy {
+    width: max-content;
+    max-width: none;
+  }
+
+  .parent-hero-copy h1 {
+    width: max-content;
+    max-width: none;
+    white-space: nowrap;
+  }
+}
+/* ==================================================
+   HOME + HEADER PC WIDTH FINAL UNIFY
+================================================== */
+
+@media (min-width: 1200px) {
+  .parent-site-header .container,
+  .parent-home .container,
+  .home-region-section .container,
+  .home-content-section .container,
+  .parent-course-section .container,
+  .parent-gift-section .container {
+    width: calc(100% - 64px) !important;
+    max-width: 1680px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+@media (min-width: 1600px) {
+  .parent-site-header .container,
+  .parent-home .container,
+  .home-region-section .container,
+  .home-content-section .container,
+  .parent-course-section .container,
+  .parent-gift-section .container {
+    width: calc(100% - 80px) !important;
+    max-width: 1760px !important;
+  }
+}

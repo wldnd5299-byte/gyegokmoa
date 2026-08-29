@@ -1,6 +1,7 @@
 export const metadata = {
   title: "개인정보처리방침",
-  description: "계곡모아 개인정보처리방침입니다.",
+  description:
+    "엄마랑 아빠랑 개인정보처리방침입니다.",
 };
 
 export default function PrivacyPage() {
@@ -15,7 +16,7 @@ export default function PrivacyPage() {
           <h1>개인정보처리방침</h1>
 
           <p>
-            계곡모아의 개인정보 처리에 관한
+            엄마랑 아빠랑의 개인정보 처리에 관한
             기본 사항을 안내합니다.
           </p>
         </div>
@@ -28,10 +29,11 @@ export default function PrivacyPage() {
               <h2>1. 개인정보의 처리</h2>
 
               <p>
-                현재 계곡모아는 일반적인
-                계곡 정보 열람을 위해 이용자의
-                이름, 전화번호 등 직접적인
-                개인정보 입력을 요구하지 않습니다.
+                현재 엄마랑 아빠랑은 일반적인
+                장소 및 추천코스 정보 열람을 위해
+                이용자의 이름, 전화번호 등
+                직접적인 개인정보 입력을
+                요구하지 않습니다.
               </p>
             </section>
 
@@ -39,7 +41,7 @@ export default function PrivacyPage() {
               <h2>2. 외부 서비스 이용</h2>
 
               <p>
-                계곡 위치 표시 및 길찾기 등의
+                장소 위치 표시 및 길찾기 등의
                 기능을 제공하기 위해 외부 지도
                 서비스를 이용할 수 있습니다.
                 외부 서비스 이용 시 해당 서비스

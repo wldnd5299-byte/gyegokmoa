@@ -1,7 +1,9 @@
 import Link from "next/link";
+
 import {
   Map,
   MapPin,
+  Route,
   Search,
   ShieldCheck,
 } from "lucide-react";
@@ -9,7 +11,7 @@ import {
 export const metadata = {
   title: "서비스 소개",
   description:
-    "계곡모아는 전국 계곡의 위치와 방문 정보를 쉽고 편리하게 찾을 수 있도록 제공하는 계곡 정보 서비스입니다.",
+    "엄마랑 아빠랑은 부모님과 함께 가기 좋은 장소와 맛집, 카페, 숙소, 추천코스를 쉽고 편리하게 찾을 수 있도록 만든 서비스입니다.",
 };
 
 export default function AboutPage() {
@@ -18,15 +20,17 @@ export default function AboutPage() {
       <section className="simple-info-hero">
         <div className="container simple-info-hero-inner">
           <span className="simple-info-eyebrow">
-            ABOUT GYEGOKMOA
+            ABOUT EOMMA APPA RANG
           </span>
 
-          <h1>계곡모아를 소개합니다</h1>
+          <h1>
+            엄마랑 아빠랑을 소개합니다
+          </h1>
 
           <p>
-            대한민국의 아름다운 계곡 정보를
-            한곳에서 쉽고 편리하게 찾아볼 수 있도록
-            만들었습니다.
+            부모님과 함께 보내는 시간을
+            조금 더 편하고 특별하게 만들 수 있도록
+            가볼만한 곳과 하루 코스를 한곳에 모았습니다.
           </p>
         </div>
       </section>
@@ -35,77 +39,134 @@ export default function AboutPage() {
         <div className="container simple-info-container">
           <div className="simple-info-card">
             <span className="simple-info-icon">
-              <Map size={26} aria-hidden="true" />
+              <Map
+                size={26}
+                aria-hidden="true"
+              />
             </span>
 
-            <h2>계곡 정보를 한곳에</h2>
+            <h2>
+              부모님과 가기 좋은 장소를 한곳에
+            </h2>
 
             <p>
-              여러 곳에 흩어져 있는 계곡 정보를
-              보다 편리하게 확인할 수 있도록
-              계곡명, 지역, 주소와 방문정보를
-              정리해 제공합니다.
+              가볼만한 곳, 맛집, 카페,
+              숙소 등 부모님과 함께하기 좋은
+              장소를 지역별로 편리하게
+              찾아볼 수 있도록 정리합니다.
             </p>
           </div>
 
           <div className="simple-info-card">
             <span className="simple-info-icon">
-              <Search size={26} aria-hidden="true" />
+              <Search
+                size={26}
+                aria-hidden="true"
+              />
             </span>
 
-            <h2>간편한 계곡 검색</h2>
+            <h2>
+              간편한 지역·장소 검색
+            </h2>
 
             <p>
-              계곡 이름뿐만 아니라 지역과 주소,
-              특징 등을 이용해 원하는 계곡을
-              찾아볼 수 있습니다.
+              지역명이나 장소명을 검색해
+              원하는 곳을 빠르게 찾아볼 수 있습니다.
+              시·군·구뿐 아니라 더 구체적인
+              지역 검색도 고려하고 있습니다.
             </p>
           </div>
 
           <div className="simple-info-card">
             <span className="simple-info-icon">
-              <MapPin size={26} aria-hidden="true" />
+              <MapPin
+                size={26}
+                aria-hidden="true"
+              />
             </span>
 
-            <h2>지도에서 위치 확인</h2>
+            <h2>
+              지도에서 한눈에 확인
+            </h2>
 
             <p>
-              카카오맵을 통해 계곡의 위치를
-              확인하고 길찾기 기능을 이용할 수
-              있습니다.
+              지도에서 주변 장소의 위치를
+              확인하고, 실제 등록된 장소를
+              선택해 자세한 정보를 살펴볼 수 있습니다.
             </p>
           </div>
 
           <div className="simple-info-card">
             <span className="simple-info-icon">
-              <ShieldCheck size={26} aria-hidden="true" />
+              <Route
+                size={26}
+                aria-hidden="true"
+              />
             </span>
 
-            <h2>방문 전 확인해 주세요</h2>
+            <h2>
+              추천코스로 하루 동선까지
+            </h2>
 
             <p>
-              계곡의 수위, 출입 가능 여부,
-              주차 및 편의시설 정보는 날씨와
-              현장 상황에 따라 변경될 수 있습니다.
+              어디부터 가야 할지 고민될 때는
+              추천코스를 통해 장소의 방문 순서와
+              이동 동선을 지도에서 함께 확인할 수 있습니다.
+            </p>
+          </div>
+
+          <div className="simple-info-card">
+            <span className="simple-info-icon">
+              <ShieldCheck
+                size={26}
+                aria-hidden="true"
+              />
+            </span>
+
+            <h2>
+              방문 전 최신 정보를 확인해 주세요
+            </h2>
+
+            <p>
+              운영시간, 이용 가능 여부,
+              주차 및 편의시설 등의 정보는
+              현장 상황에 따라 달라질 수 있습니다.
               방문 전 최신 정보를 확인해 주세요.
             </p>
           </div>
 
           <div className="simple-info-actions">
             <Link
-              href="/#search"
+              href="/search"
               className="simple-info-primary-button"
             >
-              <Search size={18} aria-hidden="true" />
-              계곡 검색하기
+              <Search
+                size={18}
+                aria-hidden="true"
+              />
+              장소 검색하기
             </Link>
 
             <Link
               href="/map"
               className="simple-info-secondary-button"
             >
-              <MapPin size={18} aria-hidden="true" />
+              <MapPin
+                size={18}
+                aria-hidden="true"
+              />
               지도에서 찾기
+            </Link>
+
+            <Link
+              href="/courses"
+              className="simple-info-secondary-button"
+            >
+              <Route
+                size={18}
+                aria-hidden="true"
+              />
+              추천코스 보기
             </Link>
           </div>
         </div>

@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
+import "../styles/header.css";
+import "../styles/home.css";
+import "../styles/map.css";
+import "../styles/admin.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: {
-    default: "계곡모아 | 대한민국 계곡 정보",
-    template: "%s | 계곡모아",
+    default: "엄마랑 아빠랑 | 부모님과 함께 가기 좋은 곳",
+    template: "%s | 엄마랑 아빠랑",
   },
 
   description:
-    "전국 계곡의 위치, 전화번호, 주차, 화장실, 물놀이 정보를 한곳에서 확인하세요.",
+    "부모님과 함께 가기 좋은 여행지, 맛집, 카페, 숙소와 추천코스를 한곳에서 찾아보세요.",
 
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ||
@@ -19,12 +22,12 @@ export const metadata: Metadata = {
   ),
 
   openGraph: {
-    title: "계곡모아 | 대한민국 계곡 정보",
+    title: "엄마랑 아빠랑 | 부모님과 함께 가기 좋은 곳",
     description:
-      "전국 계곡의 위치와 방문 정보를 한곳에서 확인하세요.",
+      "부모님과 함께하기 좋은 장소와 맛집, 카페, 숙소, 추천코스를 한곳에서 찾아보세요.",
     type: "website",
     locale: "ko_KR",
-    siteName: "계곡모아",
+    siteName: "엄마랑 아빠랑",
   },
 };
 

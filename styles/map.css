@@ -1,0 +1,2048 @@
+/* =========================================================
+   엄마랑 아빠랑 - 통합 장소 지도
+   ========================================================= */
+
+.places-map-page {
+  min-height: 100vh;
+  background: #f8f8f5;
+  color: #1d392f;
+}
+
+
+/* =========================================================
+   MAP HEADER
+   ========================================================= */
+
+.places-map-header {
+  padding: 58px 0 32px;
+  background:
+    linear-gradient(
+      135deg,
+      #faf7ef 0%,
+      #fffdf9 55%,
+      #f1f6f1 100%
+    );
+}
+
+.places-map-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 15px;
+  color: #a36d42;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.places-map-header h1 {
+  margin: 0;
+  color: #193b30;
+  font-size: clamp(38px, 4vw, 56px);
+  line-height: 1.15;
+  letter-spacing: -2.6px;
+  font-weight: 900;
+}
+
+.places-map-header h1 em {
+  color: #b97848;
+  font-style: normal;
+}
+
+.places-map-header p {
+  margin: 18px 0 0;
+  color: #747d78;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.map-mobile-break {
+  display: none;
+}
+
+
+/* =========================================================
+   CATEGORY
+   ========================================================= */
+
+.places-map-category-section {
+  padding: 22px 0 14px;
+  background: #ffffff;
+}
+
+.places-map-categories {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.places-map-categories::-webkit-scrollbar {
+  display: none;
+}
+
+.map-category-item {
+  flex: 0 0 auto;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 16px;
+  border: 1px solid #e3e5e0;
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.map-category-item.attraction {
+  color: #3f725d;
+}
+
+.map-category-item.restaurant {
+  color: #c87548;
+}
+
+.map-category-item.cafe {
+  color: #8b674f;
+}
+
+.map-category-item.accommodation {
+  color: #557b91;
+}
+
+
+/* =========================================================
+   MAP
+   ========================================================= */
+
+.places-map-main {
+  padding: 10px 0 40px;
+  background: #ffffff;
+}
+
+.places-map-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.places-map-canvas {
+  width: 100%;
+  height: 620px;
+  min-height: 620px;
+  overflow: hidden;
+  border: 1px solid #dfe3df;
+  border-radius: 26px;
+  background: #eef1ed;
+  box-shadow:
+    0 16px 42px
+    rgba(39, 60, 50, 0.09);
+}
+
+
+/* =========================================================
+   지도 범례
+   ========================================================= */
+
+.places-map-legend {
+  position: absolute;
+  z-index: 20;
+  top: 16px;
+  left: 16px;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+
+  max-width: calc(100% - 150px);
+
+  padding: 8px 10px;
+
+  border: 1px solid
+    rgba(220, 224, 219, 0.95);
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.94);
+
+  box-shadow:
+    0 5px 18px
+    rgba(27, 45, 36, 0.11);
+
+  backdrop-filter: blur(10px);
+}
+
+.places-map-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #56635d;
+
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.places-map-legend i {
+  width: 9px;
+  height: 9px;
+  display: block;
+  border-radius: 50%;
+}
+
+.legend-attraction {
+  background: #3f725d;
+}
+
+.legend-restaurant {
+  background: #c87548;
+}
+
+.legend-cafe {
+  background: #8b674f;
+}
+
+.legend-accommodation {
+  background: #557b91;
+}
+
+
+/* =========================================================
+   현재 위치
+   ========================================================= */
+
+.places-current-location {
+  position: absolute;
+  z-index: 30;
+  left: 18px;
+  bottom: 18px;
+
+  min-height: 44px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 0 16px;
+
+  border: 1px solid #d9ded9;
+  border-radius: 13px;
+
+  background: #ffffff;
+  color: #315e4e;
+
+  font-size: 13px;
+  font-weight: 850;
+
+  box-shadow:
+    0 5px 18px
+    rgba(27, 45, 36, 0.16);
+
+  cursor: pointer;
+}
+
+.places-current-location:hover {
+  background: #f5f8f5;
+}
+
+.places-current-location:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+
+/* =========================================================
+   지도 오류 / 빈 상태
+   ========================================================= */
+
+.places-map-error,
+.places-map-empty {
+  width: 100%;
+  padding: 22px;
+
+  border: 1px solid #e3e5e0;
+  border-radius: 16px;
+
+  background: #fafaf7;
+  color: #717a75;
+
+  text-align: center;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   지도 아래 장소
+   ========================================================= */
+
+.places-map-list-section {
+  padding: 54px 0 72px;
+  background: #f4f5f1;
+}
+
+.places-map-list-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+
+  margin-bottom: 23px;
+}
+
+.places-map-list-heading > div > span {
+  display: block;
+  margin-bottom: 6px;
+
+  color: #ad7445;
+
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.places-map-list-heading h2 {
+  margin: 0;
+
+  color: #183a30;
+
+  font-size: 27px;
+  letter-spacing: -1.1px;
+}
+
+.places-map-list-heading > strong {
+  color: #315e4e;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   장소 카드 가로 스크롤
+   ========================================================= */
+
+.places-map-card-scroll {
+  display: flex;
+  gap: 15px;
+
+  width: 100%;
+
+  overflow-x: auto;
+
+  padding: 2px 2px 15px;
+
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+
+.places-map-card-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.places-map-card {
+  flex: 0 0 270px;
+
+  overflow: hidden;
+
+  border: 1px solid #e1e3de;
+  border-radius: 19px;
+
+  background: #ffffff;
+  color: inherit;
+
+  text-decoration: none;
+
+  scroll-snap-align: start;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.places-map-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 13px 30px
+    rgba(36, 54, 45, 0.11);
+}
+
+.places-map-card-image {
+  position: relative;
+
+  height: 165px;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.places-map-card-image > span {
+  position: absolute;
+
+  left: 13px;
+  bottom: 12px;
+
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.92);
+
+  color: #315e4e;
+
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.places-map-card-body {
+  padding: 16px 16px 18px;
+}
+
+.places-map-card-body > span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  margin-bottom: 7px;
+
+  color: #8a918d;
+
+  font-size: 11px;
+}
+
+.places-map-card-body > strong {
+  display: block;
+
+  color: #253a32;
+
+  font-size: 17px;
+  line-height: 1.35;
+  letter-spacing: -0.5px;
+}
+
+.places-map-card-body > p {
+  display: -webkit-box;
+
+  overflow: hidden;
+
+  margin: 8px 0 0;
+
+  color: #7a827e;
+
+  font-size: 12px;
+  line-height: 1.55;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+  .places-map-header {
+    padding: 34px 0 22px;
+  }
+
+  .places-map-eyebrow {
+    margin-bottom: 11px;
+    font-size: 11px;
+  }
+
+  .places-map-header h1 {
+    font-size: 36px;
+    line-height: 1.18;
+    letter-spacing: -2px;
+  }
+
+  .places-map-header p {
+    margin-top: 13px;
+    font-size: 13px;
+  }
+
+  .map-mobile-break {
+    display: block;
+  }
+
+
+  /* 카테고리 */
+
+  .places-map-category-section {
+    padding: 14px 0 10px;
+  }
+
+  .places-map-categories {
+    margin-right: -16px;
+    padding-right: 16px;
+  }
+
+  .map-category-item {
+    min-height: 39px;
+    padding: 0 14px;
+    font-size: 12px;
+  }
+
+
+  /* 모바일에서는 지도가 중심 */
+
+  .places-map-main {
+    padding: 6px 0 28px;
+  }
+
+  .places-map-canvas {
+    height: 62vh;
+    min-height: 480px;
+    max-height: 680px;
+
+    border-radius: 18px;
+  }
+
+  .places-map-legend {
+    top: 10px;
+    left: 10px;
+
+    max-width:
+      calc(100% - 90px);
+
+    padding: 7px 8px;
+  }
+
+  .places-map-legend span {
+    font-size: 9px;
+  }
+
+  .places-current-location {
+    left: 12px;
+    bottom: 12px;
+
+    min-height: 42px;
+
+    padding: 0 13px;
+
+    border-radius: 12px;
+
+    font-size: 12px;
+  }
+
+
+  /* 장소 카드 */
+
+  .places-map-list-section {
+    padding: 38px 0 52px;
+  }
+
+  .places-map-list-heading {
+    align-items: flex-start;
+    margin-bottom: 18px;
+  }
+
+  .places-map-list-heading h2 {
+    font-size: 23px;
+  }
+
+  .places-map-card-scroll {
+    margin-right: -16px;
+    padding-right: 16px;
+  }
+
+  .places-map-card {
+    flex-basis: 76%;
+    max-width: 290px;
+  }
+
+  .places-map-card-image {
+    height: 155px;
+  }
+}/* =========================================================
+   MAP CATEGORY FILTER - 실제 클릭 필터
+   ========================================================= */
+
+.map-category-button {
+  flex: 0 0 auto;
+  min-height: 44px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 0 16px;
+
+  border: 1px solid #e0e4df;
+  border-radius: 999px;
+
+  background: #ffffff;
+  color: #66716b;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+
+  white-space: nowrap;
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.map-category-button:hover {
+  transform: translateY(-1px);
+
+  border-color: #ccd5cf;
+
+  box-shadow:
+    0 5px 15px
+    rgba(35, 58, 47, 0.08);
+}
+
+
+/* 숫자 */
+
+.map-category-count {
+  min-width: 22px;
+  height: 22px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 6px;
+
+  border-radius: 999px;
+
+  background: #f0f2ef;
+  color: #7a837e;
+
+  font-size: 10px;
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   전체
+   ========================================================= */
+
+.map-category-all {
+  color: #315e4e;
+}
+
+.map-category-all.active {
+  border-color: #315e4e;
+  background: #315e4e;
+  color: #ffffff;
+
+  box-shadow:
+    0 6px 17px
+    rgba(49, 94, 78, 0.2);
+}
+
+.map-category-all.active
+.map-category-count {
+  background:
+    rgba(255, 255, 255, 0.18);
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   가볼만한 곳
+   ========================================================= */
+
+.map-category-attraction {
+  color: #3f725d;
+}
+
+.map-category-attraction.active {
+  border-color: #3f725d;
+  background: #3f725d;
+  color: #ffffff;
+}
+
+.map-category-attraction.active
+.map-category-count {
+  background:
+    rgba(255, 255, 255, 0.18);
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   맛집
+   ========================================================= */
+
+.map-category-restaurant {
+  color: #bd7047;
+}
+
+.map-category-restaurant.active {
+  border-color: #bd7047;
+  background: #bd7047;
+  color: #ffffff;
+}
+
+.map-category-restaurant.active
+.map-category-count {
+  background:
+    rgba(255, 255, 255, 0.2);
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   카페
+   ========================================================= */
+
+.map-category-cafe {
+  color: #85634d;
+}
+
+.map-category-cafe.active {
+  border-color: #85634d;
+  background: #85634d;
+  color: #ffffff;
+}
+
+.map-category-cafe.active
+.map-category-count {
+  background:
+    rgba(255, 255, 255, 0.2);
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   숙소
+   ========================================================= */
+
+.map-category-accommodation {
+  color: #557b91;
+}
+
+.map-category-accommodation.active {
+  border-color: #557b91;
+  background: #557b91;
+  color: #ffffff;
+}
+
+.map-category-accommodation.active
+.map-category-count {
+  background:
+    rgba(255, 255, 255, 0.2);
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   지도 결과 숫자
+   ========================================================= */
+
+.places-map-result-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 12px;
+}
+
+.places-map-result-top > div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.places-map-result-top span {
+  color: #747d78;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.places-map-result-top strong {
+  color: #315e4e;
+
+  font-size: 13px;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   장소 카드 유형 표시
+   ========================================================= */
+
+.places-map-card-type {
+  position: absolute;
+
+  right: 12px;
+  bottom: 12px;
+
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(28, 57, 46, 0.86);
+
+  color: #ffffff;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  backdrop-filter: blur(5px);
+}
+
+
+/* =========================================================
+   장소 없음
+   ========================================================= */
+
+.places-map-list-empty {
+  padding: 45px 20px;
+
+  border: 1px dashed #d9ddd8;
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  color: #858d88;
+
+  text-align: center;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+  .map-category-button {
+    min-height: 40px;
+
+    padding: 0 13px;
+
+    gap: 6px;
+
+    font-size: 12px;
+  }
+
+  .map-category-count {
+    min-width: 20px;
+    height: 20px;
+
+    padding: 0 5px;
+
+    font-size: 9px;
+  }
+
+  .places-map-result-top {
+    margin-bottom: 9px;
+  }
+}/* =========================================================
+   MAP REGION FILTER
+   ========================================================= */
+
+.map-region-section {
+  padding: 24px 0 8px;
+  background: #ffffff;
+}
+
+.map-region-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 13px;
+}
+
+.map-region-heading span {
+  color: #a66f45;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.map-region-heading strong {
+  color: #30483e;
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.map-region-scroll {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  width: 100%;
+  overflow-x: auto;
+
+  padding: 2px 2px 7px;
+
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+.map-region-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.map-region-button {
+  flex: 0 0 auto;
+
+  min-height: 38px;
+  padding: 0 15px;
+
+  border: 1px solid #e2e5e0;
+  border-radius: 999px;
+
+  background: #f7f7f4;
+  color: #6e7772;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+
+  white-space: nowrap;
+  cursor: pointer;
+
+  transition:
+    background .18s ease,
+    color .18s ease,
+    border-color .18s ease;
+}
+
+.map-region-button:hover {
+  border-color: #cdd7d0;
+  background: #edf2ee;
+  color: #315e4e;
+}
+
+.map-region-button.active {
+  border-color: #315e4e;
+  background: #315e4e;
+  color: #ffffff;
+}
+
+
+/* 모바일 */
+
+@media (max-width: 760px) {
+
+  .map-region-section {
+    padding-top: 18px;
+  }
+
+  .map-region-heading {
+    margin-bottom: 10px;
+  }
+
+  .map-region-scroll {
+    margin-right: -16px;
+    padding-right: 16px;
+  }
+
+  .map-region-button {
+    min-height: 36px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+}/* =========================================================
+   MAP FILTER RESET
+   ========================================================= */
+
+.places-map-result-info {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.map-filter-reset {
+  min-height: 34px;
+  padding: 0 12px;
+
+  border: 1px solid #dce2dd;
+  border-radius: 999px;
+
+  background: #ffffff;
+  color: #66736d;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.map-filter-reset:hover {
+  border-color: #315e4e;
+  background: #f2f6f3;
+  color: #315e4e;
+}
+
+@media (max-width: 760px) {
+  .map-filter-reset {
+    min-height: 32px;
+    padding: 0 11px;
+    font-size: 10px;
+  }
+}/* =========================================================
+   MAP CONTROLS
+   ========================================================= */
+
+.places-map-controls {
+  position: absolute;
+  z-index: 30;
+
+  left: 18px;
+  bottom: 18px;
+
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.places-map-control-button {
+  min-height: 44px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 0 15px;
+
+  border: 1px solid #d9ded9;
+  border-radius: 13px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.96
+    );
+
+  color: #315e4e;
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 850;
+
+  box-shadow:
+    0 5px 18px
+    rgba(
+      27,
+      45,
+      36,
+      0.15
+    );
+
+  backdrop-filter:
+    blur(8px);
+
+  cursor: pointer;
+}
+
+.places-map-control-button:hover {
+  background: #f4f7f5;
+}
+
+.places-map-control-button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+
+@media (max-width: 760px) {
+
+  .places-map-controls {
+    left: 12px;
+    bottom: 12px;
+
+    gap: 6px;
+  }
+
+  .places-map-control-button {
+    min-height: 41px;
+
+    padding: 0 12px;
+
+    border-radius: 11px;
+
+    font-size: 11px;
+  }
+}/* =========================================================
+   MAP COMPACT HEADER
+   ========================================================= */
+
+.places-map-compact-header {
+  padding: 34px 0 22px;
+  background:
+    linear-gradient(
+      135deg,
+      #faf7ef 0%,
+      #fffdf9 60%,
+      #f3f6f1 100%
+    );
+}
+
+.places-map-compact-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-bottom: 10px;
+
+  color: #a36d42;
+
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.places-map-compact-heading h1 {
+  margin: 0;
+
+  color: #183b31;
+
+  font-size: 34px;
+  line-height: 1.2;
+  letter-spacing: -1.6px;
+}
+
+.places-map-compact-heading p {
+  margin: 9px 0 0;
+
+  color: #737d77;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   LOCATION SEARCH
+   ========================================================= */
+
+.map-location-search-section {
+  padding: 22px 0 8px;
+  background: #ffffff;
+}
+
+.map-location-search-box {
+  padding: 24px;
+
+  border: 1px solid #e1e4df;
+  border-radius: 20px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 10px 30px
+    rgba(37, 58, 48, 0.06);
+}
+
+.map-location-search-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+}
+
+.map-location-search-heading span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #aa7348;
+
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.map-location-search-heading strong {
+  color: #2b443a;
+
+  font-size: 17px;
+}
+
+
+.map-location-search-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr)
+    minmax(0, 1fr)
+    auto;
+
+  gap: 10px;
+
+  align-items: end;
+}
+
+.map-location-search-grid label {
+  display: block;
+}
+
+.map-location-search-grid label > span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #707a74;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.map-location-search-grid select {
+  width: 100%;
+  min-height: 46px;
+
+  padding: 0 13px;
+
+  border: 1px solid #dce1dc;
+  border-radius: 12px;
+
+  background: #f9faf8;
+  color: #8b928e;
+
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.map-location-search-button {
+  min-height: 46px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 0 20px;
+
+  border: 0;
+  border-radius: 12px;
+
+  background: #315e4e;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+.map-location-search-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.map-location-search-help {
+  margin: 12px 0 0;
+
+  color: #979d99;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+  .places-map-compact-header {
+    padding: 25px 0 17px;
+  }
+
+  .places-map-compact-heading h1 {
+    font-size: 28px;
+  }
+
+  .places-map-compact-heading p {
+    font-size: 12px;
+  }
+
+  .map-location-search-section {
+    padding-top: 14px;
+  }
+
+  .map-location-search-box {
+    padding: 18px;
+    border-radius: 17px;
+  }
+
+  .map-location-search-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .map-location-search-button {
+    grid-column: 1 / -1;
+  }
+}
+
+/* =========================================================
+   MAP SPLIT VIEW - 왼쪽 장소 목록 + 오른쪽 지도
+   ========================================================= */
+
+.places-map-split-section {
+  padding-top: 10px;
+  padding-bottom: 60px;
+}
+
+.places-map-split {
+  display: grid;
+  grid-template-columns: 370px minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.places-map-sidebar {
+  height: 680px;
+  min-height: 680px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e0e4df;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow:
+    0 14px 34px
+    rgba(35, 54, 45, 0.07);
+}
+
+.places-map-sidebar-heading {
+  flex: 0 0 auto;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid #eceeea;
+  background: #fbfbf8;
+}
+
+.places-map-sidebar-heading > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.places-map-sidebar-heading span {
+  color: #8b928e;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.places-map-sidebar-heading strong {
+  color: #315e4e;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.places-map-sidebar-heading p {
+  margin: 7px 0 0;
+  color: #909792;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.places-map-sidebar-list {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #cfd6d1 transparent;
+}
+
+.places-map-list-card {
+  overflow: hidden;
+  margin-bottom: 9px;
+  border: 1px solid #e7e9e5;
+  border-radius: 17px;
+  background: #ffffff;
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease;
+}
+
+.places-map-list-card:last-child {
+  margin-bottom: 0;
+}
+
+.places-map-list-card:hover {
+  border-color: #cdd8d1;
+}
+
+.places-map-list-card.is-selected {
+  border-color: #648a79;
+  box-shadow:
+    0 8px 22px
+    rgba(49, 94, 78, 0.12);
+}
+
+.places-map-list-card-main {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 13px;
+  padding: 10px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.places-map-list-thumb {
+  position: relative;
+  min-height: 96px;
+  overflow: hidden;
+  border-radius: 13px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.places-map-list-thumb > span {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.93);
+  color: #315e4e;
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.places-map-list-card-info {
+  min-width: 0;
+  padding: 3px 0;
+}
+
+.places-map-list-location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+  color: #8a928e;
+  font-size: 10px;
+}
+
+.places-map-list-card-info > strong {
+  display: block;
+  overflow: hidden;
+  color: #263b33;
+  font-size: 16px;
+  line-height: 1.35;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.places-map-list-card-info > p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 7px 0 0;
+  color: #7a827e;
+  font-size: 11px;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.places-map-list-card-footer {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 11px 9px;
+  border-top: 1px solid #f0f1ee;
+}
+
+.places-map-list-card-footer > span {
+  color: #8a928d;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.places-map-list-card.is-selected
+.places-map-list-card-footer > span {
+  color: #315e4e;
+}
+
+.places-map-list-card-footer > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid #d7dfda;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #315e4e;
+  font-size: 10px;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.places-map-list-card-footer > a:hover {
+  border-color: #315e4e;
+  background: #f4f7f5;
+}
+
+.places-map-map-column {
+  min-width: 0;
+}
+
+.places-map-split .places-map-canvas {
+  height: 680px;
+  min-height: 680px;
+}
+
+@media (max-width: 980px) {
+  .places-map-split {
+    grid-template-columns: 320px minmax(0, 1fr);
+  }
+
+  .places-map-list-card-main {
+    grid-template-columns: 94px minmax(0, 1fr);
+  }
+
+  .places-map-list-thumb {
+    min-height: 86px;
+  }
+}
+
+@media (max-width: 760px) {
+  .places-map-split {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 14px;
+  }
+
+  .places-map-sidebar {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    border-radius: 18px;
+  }
+
+  .places-map-sidebar-heading {
+    padding: 16px;
+  }
+
+  .places-map-sidebar-list {
+    display: flex;
+    gap: 11px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 10px 14px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .places-map-sidebar-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .places-map-list-card {
+    flex: 0 0 82%;
+    max-width: 330px;
+    margin-bottom: 0;
+    scroll-snap-align: start;
+  }
+
+  .places-map-list-card-main {
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+
+  .places-map-list-thumb {
+    min-height: 92px;
+  }
+
+  .places-map-split .places-map-canvas {
+    height: 58vh;
+    min-height: 460px;
+    max-height: 620px;
+  }
+}
+
+/* =========================================================
+   MAP UNIFIED SEARCH
+   ========================================================= */
+
+.map-unified-search-section {
+  padding: 18px 0 6px;
+  background: #ffffff;
+}
+
+.map-unified-search-box {
+  position: relative;
+  padding: 18px 20px;
+  border: 1px solid #e2e5e0;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow:
+    0 8px 24px
+    rgba(35, 55, 46, 0.05);
+}
+
+.map-unified-search-heading {
+  margin-bottom: 12px;
+}
+
+.map-unified-search-heading > span {
+  display: block;
+  margin-bottom: 4px;
+  color: #a66f46;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.map-unified-search-heading > strong {
+  color: #263b33;
+  font-size: 16px;
+}
+
+.map-unified-search-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 52px;
+  padding: 5px 6px 5px 15px;
+  border: 1px solid #dce1dc;
+  border-radius: 14px;
+  background: #fbfcfa;
+}
+
+.map-unified-search-form > svg {
+  flex: 0 0 auto;
+  color: #77817c;
+}
+
+.map-unified-search-form input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #253a32;
+  font-size: 14px;
+}
+
+.map-unified-search-form input::placeholder {
+  color: #a0a6a2;
+}
+
+.map-unified-search-clear {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #8b938f;
+  cursor: pointer;
+}
+
+.map-unified-search-clear:hover {
+  background: #eef2ef;
+}
+
+.map-unified-search-submit {
+  min-height: 40px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 11px;
+  background: #315e4e;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.map-search-suggestions {
+  position: absolute;
+  z-index: 80;
+  top: calc(100% + 7px);
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  border: 1px solid #dfe4df;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow:
+    0 16px 35px
+    rgba(30, 50, 41, 0.14);
+}
+
+.map-search-suggestion {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 14px;
+  border: 0;
+  border-bottom: 1px solid #f0f1ee;
+  background: #ffffff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.map-search-suggestion:last-child {
+  border-bottom: 0;
+}
+
+.map-search-suggestion:hover {
+  background: #f6f8f6;
+}
+
+.map-search-suggestion-icon {
+  width: 31px;
+  height: 31px;
+  flex: 0 0 31px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #edf4f0;
+  color: #315e4e;
+}
+
+.map-search-suggestion-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.map-search-suggestion-copy strong {
+  overflow: hidden;
+  color: #273b33;
+  font-size: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.map-search-suggestion-copy small {
+  color: #8c9490;
+  font-size: 10px;
+}
+
+.map-unified-search-examples {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.map-unified-search-examples > span {
+  color: #9aa19d;
+  font-size: 10px;
+}
+
+.map-unified-search-examples > button {
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 999px;
+  background: #f2f4f1;
+  color: #68736d;
+  font-size: 10px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.map-unified-search-examples > button:hover {
+  background: #e8eee9;
+  color: #315e4e;
+}
+
+@media (max-width: 760px) {
+  .map-unified-search-section {
+    padding-top: 12px;
+  }
+
+  .map-unified-search-box {
+    padding: 15px;
+    border-radius: 16px;
+  }
+
+  .map-unified-search-form {
+    min-height: 50px;
+    padding-left: 12px;
+  }
+
+  .map-unified-search-submit {
+    padding: 0 14px;
+  }
+
+  .map-unified-search-form input {
+    font-size: 13px;
+  }
+}
+
+/* =========================================================
+   REGION SEARCH + EMPTY SIDEBAR
+   ========================================================= */
+
+.places-map-sidebar-empty {
+  min-height: 280px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 34px 24px;
+  color: #8a938e;
+  text-align: center;
+}
+
+.places-map-sidebar-empty > svg {
+  margin-bottom: 12px;
+  color: #6d8f80;
+}
+
+.places-map-sidebar-empty > strong {
+  margin-bottom: 7px;
+  color: #354b42;
+  font-size: 14px;
+}
+
+.places-map-sidebar-empty > p {
+  max-width: 230px;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.map-search-suggestion-copy small {
+  display: block;
+}
+
+@media (max-width: 760px) {
+  .places-map-sidebar-empty {
+    min-height: 170px;
+    padding: 28px 20px;
+  }
+}
+
+/* =========================================================
+   MAP DISTANCE SORT
+   ========================================================= */
+
+.places-map-result-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.map-distance-sort {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 11px;
+  border: 1px solid #dce2dd;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #5f6c66;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.map-distance-sort:hover:not(:disabled) {
+  border-color: #9db4a9;
+  background: #f5f8f6;
+  color: #315e4e;
+}
+
+.map-distance-sort.active {
+  border-color: #315e4e;
+  background: #315e4e;
+  color: #ffffff;
+}
+
+.map-distance-sort:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+.places-map-list-distance {
+  color: #527464;
+  font-size: 10px;
+  font-weight: 850;
+}
+
+@media (max-width: 760px) {
+  .places-map-result-top {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .places-map-result-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .map-distance-sort {
+    min-height: 32px;
+    padding: 0 9px;
+    font-size: 10px;
+  }
+}
+/* =========================================================
+   MAP - WIDE PC LAYOUT
+   PC 지도 화면 확장 / 모바일 유지
+   ========================================================= */
+
+@media (min-width: 1200px) {
+
+  /* 지도 페이지의 주요 영역만 넓게 사용 */
+  .places-map-page .places-map-compact-header .container,
+  .places-map-page .map-unified-search-section .container,
+  .places-map-page .places-map-category-section .container,
+  .places-map-page .map-region-section .container,
+  .places-map-page .places-map-split-section .container {
+    width: calc(100% - 64px);
+    max-width: 1680px;
+  }
+
+  /* 상단 제목 */
+  .places-map-compact-header {
+    padding-top: 42px;
+    padding-bottom: 28px;
+  }
+
+  .places-map-compact-heading h1 {
+    font-size: 40px;
+  }
+
+  .places-map-compact-heading p {
+    font-size: 15px;
+  }
+
+  /* 검색창도 넓어진 본문 폭에 맞춤 */
+  .map-unified-search-section {
+    padding-top: 26px;
+  }
+
+  .map-unified-search-box {
+    padding: 22px 24px;
+    border-radius: 20px;
+  }
+
+  .map-unified-search-form {
+    min-height: 56px;
+  }
+
+  .map-unified-search-form input {
+    font-size: 15px;
+  }
+
+  /* 핵심: 장소 목록 + 지도 */
+  .places-map-split {
+    grid-template-columns:
+      400px
+      minmax(0, 1fr);
+
+    gap: 18px;
+  }
+
+  /* 왼쪽 장소 목록 */
+  .places-map-sidebar {
+    height: 740px;
+    min-height: 740px;
+  }
+
+  /* 오른쪽 지도 */
+  .places-map-split .places-map-canvas {
+    height: 740px;
+    min-height: 740px;
+    border-radius: 24px;
+  }
+
+  /* 장소 카드 약간 확대 */
+  .places-map-list-card-main {
+    grid-template-columns:
+      120px
+      minmax(0, 1fr);
+
+    gap: 14px;
+    padding: 11px;
+  }
+
+  .places-map-list-thumb {
+    min-height: 100px;
+  }
+
+  .places-map-list-card-info > strong {
+    font-size: 17px;
+  }
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   1600px 이상에서는 더 시원하게
+   ========================================================= */
+
+@media (min-width: 1600px) {
+
+  .places-map-page .places-map-compact-header .container,
+  .places-map-page .map-unified-search-section .container,
+  .places-map-page .places-map-category-section .container,
+  .places-map-page .map-region-section .container,
+  .places-map-page .places-map-split-section .container {
+    width: calc(100% - 80px);
+    max-width: 1760px;
+  }
+
+  .places-map-split {
+    grid-template-columns:
+      420px
+      minmax(0, 1fr);
+
+    gap: 20px;
+  }
+
+  .places-map-sidebar {
+    height: 780px;
+    min-height: 780px;
+  }
+
+  .places-map-split .places-map-canvas {
+    height: 780px;
+    min-height: 780px;
+  }
+}

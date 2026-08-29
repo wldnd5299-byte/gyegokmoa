@@ -7,7 +7,7 @@ import {
 export const metadata = {
   title: "정보 수정 요청",
   description:
-    "계곡모아에 등록된 계곡 정보의 수정이 필요한 경우 안내에 따라 제보해 주세요.",
+    "엄마랑 아빠랑에 등록된 장소 정보의 수정이 필요한 경우 안내에 따라 알려주세요.",
 };
 
 export default function CorrectionPage() {
@@ -22,7 +22,7 @@ export default function CorrectionPage() {
           <h1>정보 수정 요청</h1>
 
           <p>
-            계곡모아에 등록된 정보 중
+            엄마랑 아빠랑에 등록된 정보 중
             실제 현장과 다른 내용이 있다면
             알려주세요.
           </p>
@@ -38,12 +38,14 @@ export default function CorrectionPage() {
             />
 
             <div>
-              <h2>어떤 정보를 알려주면 되나요?</h2>
+              <h2>
+                어떤 정보를 알려주면 되나요?
+              </h2>
 
               <p>
-                계곡 위치, 주소, 전화번호,
-                주차 가능 여부, 화장실,
-                반려견 동반 여부 등
+                장소 위치, 주소, 전화번호,
+                운영시간, 주차 가능 여부,
+                화장실, 편의시설 등
                 수정이 필요한 정보를 알려주시면
                 확인 후 반영할 수 있습니다.
               </p>
@@ -56,12 +58,14 @@ export default function CorrectionPage() {
               aria-hidden="true"
             />
 
-            <h2>수정 요청 시 포함해 주세요</h2>
+            <h2>
+              수정 요청 시 포함해 주세요
+            </h2>
 
             <div className="simple-info-check-list">
               <p>
                 <CheckCircle2 size={18} />
-                수정이 필요한 계곡 이름
+                수정이 필요한 장소 이름
               </p>
 
               <p>

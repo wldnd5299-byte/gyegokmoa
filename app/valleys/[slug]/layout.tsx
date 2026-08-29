@@ -36,7 +36,7 @@ export async function generateMetadata({
     description,
 
     openGraph: {
-      title: `${valley.name} | 계곡모아`,
+      title: `${valley.name} | 엄마랑 아빠랑`,
       description,
 
       images: valley.image_url

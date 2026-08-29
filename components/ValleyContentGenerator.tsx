@@ -89,8 +89,7 @@ export default function ValleyContentGenerator() {
 
     const generatedSummary =
       `${locationText}입니다. ` +
-      `계곡모아에서 위치와 방문 정보를 확인할 수 있으며, ${infoText} ` +
-      `계곡의 수위와 출입 가능 여부는 날씨와 현장 상황에 따라 달라질 수 있으므로 방문 전 최신 정보를 확인해 주세요.`;
+      "엄마랑 아빠랑에서 위치와 방문 정보를 확인할 수 있습니다."
 
     const generatedTags: string[] = [
       region,
