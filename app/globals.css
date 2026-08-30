@@ -5876,3 +5876,619 @@ body:has(.places-map-page-v2) .footer {
     font-size: 11px !important;
   }
 }
+
+
+/* =========================================================
+   HOME MOBILE DESIGN PASS V3
+   - 실제 iPhone 캡처 기준 전체 밀도/여백 정리
+   - PC/태블릿 영향 없음
+   - 기능/데이터/가로 스크롤 구조 유지
+   - 추천코스 V2의 2x2 흐름 유지
+========================================================= */
+@media (max-width: 760px) {
+
+  /* ---------- HEADER ---------- */
+  .parent-site-header .parent-header-inner {
+    width: calc(100% - 32px) !important;
+    min-height: 66px !important;
+    margin-inline: auto !important;
+    gap: 16px !important;
+  }
+
+  .parent-site-header .parent-brand {
+    gap: 8px !important;
+  }
+
+  .parent-site-header .parent-brand-symbol {
+    width: 36px !important;
+    height: 32px !important;
+    transform: scale(.88);
+    transform-origin: center;
+  }
+
+  .parent-site-header .parent-brand-text strong {
+    font-size: 20px !important;
+    line-height: 1.08 !important;
+    letter-spacing: -1px !important;
+  }
+
+  .parent-site-header .parent-brand-text span {
+    display: none !important;
+  }
+
+  .parent-site-header .parent-mobile-menu,
+  .parent-site-header .mobile-menu {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    border-radius: 50% !important;
+  }
+
+  /* ---------- HERO ---------- */
+  .parent-home .parent-hero {
+    padding-top: 26px !important;
+    padding-bottom: 16px !important;
+  }
+
+  .parent-home .parent-hero > .container,
+  .parent-home .parent-hero .parent-hero-inner {
+    width: calc(100% - 32px) !important;
+    max-width: none !important;
+    margin-inline: auto !important;
+    padding-inline: 0 !important;
+  }
+
+  .parent-home .parent-hero-inner {
+    min-height: 0 !important;
+    gap: 22px !important;
+  }
+
+  .parent-home .parent-hero-copy {
+    min-height: 0 !important;
+    padding: 0 !important;
+  }
+
+  .parent-home .parent-hero-kicker {
+    margin-bottom: 10px !important;
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+  }
+
+  .parent-home .parent-hero-kicker::before {
+    width: 30px !important;
+    margin-right: 7px !important;
+  }
+
+  .parent-home .parent-hero-copy h1 {
+    margin: 0 !important;
+    font-size: 38px !important;
+    line-height: 1.12 !important;
+    letter-spacing: -2px !important;
+    word-break: keep-all !important;
+  }
+
+  .parent-home .parent-hero-copy > p {
+    margin-top: 15px !important;
+    max-width: 100% !important;
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+    letter-spacing: -.35px !important;
+    word-break: keep-all !important;
+  }
+
+  .parent-home .parent-hero-search {
+    min-height: 52px !important;
+    margin-top: 19px !important;
+    padding: 4px 5px 4px 14px !important;
+    border-radius: 15px !important;
+  }
+
+  .parent-home .parent-hero-search > svg {
+    width: 20px !important;
+    height: 20px !important;
+    flex: 0 0 20px !important;
+  }
+
+  .parent-home .parent-hero-search input {
+    min-width: 0 !important;
+    height: 42px !important;
+    padding-inline: 10px !important;
+    font-size: 13px !important;
+  }
+
+  .parent-home .parent-hero-search button {
+    height: 42px !important;
+    min-width: 62px !important;
+    padding: 0 15px !important;
+    border-radius: 11px !important;
+    font-size: 13px !important;
+  }
+
+  .parent-home .parent-hero-promos {
+    gap: 10px !important;
+    padding-bottom: 3px !important;
+  }
+
+  .parent-home .parent-hero-promo-card {
+    flex-basis: 78% !important;
+    min-height: 205px !important;
+    padding: 18px !important;
+    border-radius: 19px !important;
+  }
+
+  .parent-home .parent-hero-promo-message > span {
+    margin-bottom: 6px !important;
+    padding: 4px 8px !important;
+    font-size: 9px !important;
+  }
+
+  .parent-home .parent-hero-promo-message strong {
+    font-size: 18px !important;
+    line-height: 1.28 !important;
+  }
+
+  /* ---------- 공통 모바일 콘텐츠 기준선 ---------- */
+  .parent-home .parent-category-section > .container,
+  .parent-home .parent-map-section > .container,
+  .parent-home .home-region-section > .container,
+  .parent-home .home-content-section > .container,
+  .parent-home .parent-gift-section > .container {
+    width: calc(100% - 32px) !important;
+    max-width: none !important;
+    margin-inline: auto !important;
+    padding-inline: 0 !important;
+  }
+
+  /* ---------- CATEGORY ---------- */
+  .parent-home .parent-category-section {
+    padding-top: 12px !important;
+    padding-bottom: 24px !important;
+  }
+
+  .parent-home .parent-category-grid {
+    gap: 10px !important;
+    padding-bottom: 3px !important;
+  }
+
+  .parent-home .parent-category-card {
+    flex: 0 0 72% !important;
+    min-height: 146px !important;
+    padding: 17px !important;
+    border-radius: 20px !important;
+  }
+
+  .parent-home .parent-category-icon {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .parent-home .parent-category-icon svg {
+    width: 21px !important;
+    height: 21px !important;
+  }
+
+  .parent-home .parent-category-card strong {
+    font-size: 19px !important;
+    line-height: 1.25 !important;
+  }
+
+  .parent-home .parent-category-card p {
+    margin-top: 4px !important;
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+  }
+
+  .parent-home .parent-category-swipe-hint {
+    margin-top: 8px !important;
+    padding-right: 2px !important;
+  }
+
+  .parent-home .parent-category-swipe-hint span {
+    font-size: 10px !important;
+  }
+
+  .parent-home .parent-category-swipe-hint svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  /* ---------- MAP BANNER ---------- */
+  .parent-home .parent-map-section {
+    padding-top: 0 !important;
+    padding-bottom: 24px !important;
+  }
+
+  .parent-home .parent-map-banner {
+    min-height: 200px !important;
+    padding: 22px 19px !important;
+    border-radius: 20px !important;
+  }
+
+  .parent-home .parent-map-content {
+    gap: 12px !important;
+    align-items: flex-start !important;
+  }
+
+  .parent-home .parent-map-icon {
+    width: 46px !important;
+    height: 46px !important;
+    flex: 0 0 46px !important;
+    border-radius: 13px !important;
+  }
+
+  .parent-home .parent-map-icon svg {
+    width: 23px !important;
+    height: 23px !important;
+  }
+
+  .parent-home .parent-map-content strong {
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    letter-spacing: -.55px !important;
+  }
+
+  .parent-home .parent-map-content p {
+    max-width: 245px !important;
+    margin: 6px 0 11px !important;
+    font-size: 11.5px !important;
+    line-height: 1.55 !important;
+    word-break: keep-all !important;
+  }
+
+  .parent-home .parent-map-button {
+    min-height: 36px !important;
+    padding: 0 13px !important;
+    font-size: 11px !important;
+    border-radius: 11px !important;
+  }
+
+  .parent-home .parent-map-decoration {
+    opacity: .36 !important;
+  }
+
+  /* ---------- REGION TABS ---------- */
+  .parent-home .home-region-section {
+    padding-top: 8px !important;
+    padding-bottom: 6px !important;
+  }
+
+  .parent-home .region-tabs-scroll {
+    gap: 7px !important;
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+  }
+
+  .parent-home .region-tab {
+    min-height: 36px !important;
+    padding: 0 14px !important;
+    font-size: 11px !important;
+  }
+
+  /* ---------- CONTENT SECTIONS ---------- */
+  .parent-home .home-content-section {
+    padding-top: 24px !important;
+    padding-bottom: 25px !important;
+  }
+
+  .parent-home .home-content-section.is-empty {
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
+  }
+
+  .parent-home .home-section-heading {
+    gap: 12px !important;
+    margin-bottom: 13px !important;
+    padding: 0 !important;
+    align-items: center !important;
+  }
+
+  .parent-home .home-section-heading h2 {
+    font-size: 22px !important;
+    line-height: 1.22 !important;
+    letter-spacing: -1px !important;
+    word-break: keep-all !important;
+  }
+
+  .parent-home .home-section-heading p {
+    margin-top: 4px !important;
+    font-size: 10.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  .parent-home .home-section-more,
+  .parent-home .home-section-heading > a {
+    flex: 0 0 auto !important;
+    gap: 2px !important;
+    font-size: 11px !important;
+    white-space: nowrap !important;
+  }
+
+  .parent-home .home-section-more svg,
+  .parent-home .home-section-heading > a svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  .parent-home .home-place-scroll {
+    gap: 10px !important;
+    padding: 0 0 4px !important;
+  }
+
+  .parent-home .home-place-card-v2 {
+    flex-basis: 74% !important;
+  }
+
+  .parent-home .home-place-card-v2 .home-place-image {
+    min-height: 210px !important;
+    border-radius: 17px !important;
+  }
+
+  .parent-home .home-place-region {
+    font-size: 9.5px !important;
+  }
+
+  .parent-home .home-place-card-v2 .home-place-info {
+    padding-top: 11px !important;
+  }
+
+  .parent-home .home-place-card-v2 .home-place-info > strong {
+    margin-top: 4px !important;
+    font-size: 16px !important;
+    line-height: 1.32 !important;
+    letter-spacing: -.5px !important;
+  }
+
+  .parent-home .home-place-card-v2 .home-place-info > p {
+    min-height: 32px !important;
+    margin-top: 5px !important;
+    font-size: 10.5px !important;
+    line-height: 1.5 !important;
+  }
+
+  .parent-home .home-place-features,
+  .parent-home .home-place-features span {
+    font-size: 9.5px !important;
+  }
+
+  /* ---------- EMPTY STATES ---------- */
+  .parent-home .home-content-section.is-empty .home-section-heading {
+    margin-bottom: 9px !important;
+  }
+
+  .parent-home .home-empty-section-v2 {
+    width: 100% !important;
+    min-height: 62px !important;
+    margin: 0 !important;
+    padding: 11px 13px !important;
+    gap: 10px !important;
+    border-color: #e3e9e5 !important;
+    border-radius: 14px !important;
+    background: #fbfcfb !important;
+  }
+
+  .parent-home .home-empty-icon {
+    width: 34px !important;
+    height: 34px !important;
+    flex-basis: 34px !important;
+    border-radius: 10px !important;
+  }
+
+  .parent-home .home-empty-section-v2 strong {
+    font-size: 12px !important;
+  }
+
+  .parent-home .home-empty-section-v2 p {
+    margin-top: 2px !important;
+    font-size: 9.5px !important;
+  }
+
+  /* ---------- COURSE ---------- */
+  .parent-home .parent-course-section {
+    padding-top: 34px !important;
+    padding-bottom: 36px !important;
+  }
+
+  .parent-home .parent-course-section > .container,
+  .parent-home .parent-course-section .container {
+    width: calc(100% - 32px) !important;
+  }
+
+  .parent-home .parent-course-section .parent-section-heading {
+    margin-bottom: 16px !important;
+  }
+
+  .parent-home .parent-course-section .parent-section-heading > div {
+    padding-right: 62px !important;
+  }
+
+  .parent-home .parent-course-section .parent-section-heading > div > span {
+    margin-bottom: 6px !important;
+    font-size: 11px !important;
+  }
+
+  .parent-home .parent-course-section .parent-section-heading h2 {
+    width: calc(100% + 62px) !important;
+    font-size: 22px !important;
+    line-height: 1.26 !important;
+    letter-spacing: -1px !important;
+  }
+
+  .parent-home .parent-course-section .parent-section-heading p {
+    width: calc(100% + 62px) !important;
+    margin-top: 7px !important;
+    font-size: 11px !important;
+    line-height: 1.55 !important;
+  }
+
+  .parent-home .parent-course-section .parent-section-heading > a {
+    top: 1px !important;
+    font-size: 11px !important;
+  }
+
+  .parent-home .parent-course-section .parent-course-card {
+    gap: 19px !important;
+    padding: 22px 18px !important;
+    border-radius: 21px !important;
+  }
+
+  .parent-home .parent-course-badge {
+    margin-bottom: 8px !important;
+    font-size: 10px !important;
+  }
+
+  .parent-home .parent-course-section .parent-course-card h3 {
+    font-size: 22px !important;
+    line-height: 1.3 !important;
+  }
+
+  .parent-home .parent-course-section .parent-course-card p {
+    margin-top: 9px !important;
+    font-size: 11px !important;
+    line-height: 1.6 !important;
+  }
+
+  .parent-home .parent-course-section .parent-course-flow {
+    column-gap: 7px !important;
+    row-gap: 8px !important;
+  }
+
+  .parent-home .parent-course-section .parent-course-flow span {
+    min-height: 38px !important;
+    padding-inline: 8px !important;
+    font-size: 11px !important;
+  }
+
+  .parent-home .parent-course-section .parent-course-flow svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  /* ---------- GIFT ---------- */
+  .parent-home .parent-gift-section {
+    padding-top: 24px !important;
+    padding-bottom: 36px !important;
+  }
+
+  .parent-home .parent-gift-banner {
+    min-height: 158px !important;
+    padding: 23px 20px !important;
+    border-radius: 20px !important;
+  }
+
+  .parent-home .parent-gift-banner > div {
+    min-width: 0 !important;
+    padding-right: 8px !important;
+  }
+
+  .parent-home .parent-gift-banner span {
+    margin-bottom: 6px !important;
+    font-size: 10.5px !important;
+  }
+
+  .parent-home .parent-gift-banner h2 {
+    font-size: 21px !important;
+    line-height: 1.32 !important;
+    letter-spacing: -.8px !important;
+  }
+
+  .parent-home .parent-gift-banner p {
+    margin-top: 8px !important;
+    max-width: 290px !important;
+    font-size: 10.5px !important;
+    line-height: 1.55 !important;
+  }
+
+  .parent-home .parent-gift-banner > svg {
+    width: 20px !important;
+    height: 20px !important;
+    flex: 0 0 20px !important;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .footer {
+    padding-top: 34px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .footer .container {
+    width: calc(100% - 32px) !important;
+  }
+
+  .footer-brand-area {
+    gap: 9px !important;
+  }
+
+  .footer-brand {
+    gap: 8px !important;
+  }
+
+  .footer-brand-mark {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 10px !important;
+  }
+
+  .footer-brand strong {
+    font-size: 18px !important;
+  }
+
+  .footer-brand-area p {
+    font-size: 11.5px !important;
+    line-height: 1.65 !important;
+  }
+
+  .footer-links {
+    margin-top: 20px !important;
+    gap: 14px 18px !important;
+    font-size: 10.5px !important;
+  }
+
+  .footer-links a {
+    gap: 5px !important;
+  }
+
+  .footer-links svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  .footer-notice {
+    margin-top: 20px !important;
+    padding-top: 17px !important;
+  }
+
+  .footer-notice p {
+    font-size: 10.5px !important;
+    line-height: 1.65 !important;
+  }
+
+  .copyright {
+    margin-top: 22px !important;
+    padding-top: 16px !important;
+    font-size: 9.5px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .parent-home .parent-hero-copy h1 {
+    font-size: 35px !important;
+  }
+
+  .parent-home .parent-category-card {
+    flex-basis: 76% !important;
+  }
+
+  .parent-home .home-section-heading h2,
+  .parent-home .parent-course-section .parent-section-heading h2 {
+    font-size: 21px !important;
+  }
+
+  .parent-home .home-place-card-v2 {
+    flex-basis: 78% !important;
+  }
+
+  .parent-home .parent-course-section .parent-course-card {
+    padding-inline: 17px !important;
+  }
+}
