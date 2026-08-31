@@ -6532,3 +6532,43 @@ body:has(.places-map-page-v2) .footer {
     transform: none !important;
   }
 }
+/* ==================================================
+   HEADER LOGO V7 - MOUNTAIN / SUN / ROAD
+================================================== */
+
+.parent-site-header .parent-landscape-logo {
+  width: 62px !important;
+  height: 40px !important;
+  flex: 0 0 62px !important;
+  overflow: visible;
+}
+
+.parent-site-header .parent-landscape-mountain,
+.parent-site-header .parent-landscape-road {
+  fill: none;
+  stroke: #234f40;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.parent-site-header .parent-landscape-mountain {
+  stroke-width: 3.2;
+}
+
+.parent-site-header .parent-landscape-road {
+  stroke-width: 2.6;
+}
+
+.parent-site-header .parent-landscape-sun {
+  fill: none;
+  stroke: #b47a4a;
+  stroke-width: 3.2;
+}
+
+@media (max-width: 600px) {
+  .parent-site-header .parent-landscape-logo {
+    width: 54px !important;
+    height: 35px !important;
+    flex: 0 0 54px !important;
+  }
+}

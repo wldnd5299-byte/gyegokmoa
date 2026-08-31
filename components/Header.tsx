@@ -8,51 +8,34 @@ import { usePathname } from "next/navigation";
 function FlightHeartLogo() {
   return (
     <svg
-      className="parent-flight-logo"
-      viewBox="0 0 110 62"
+      className="parent-flight-logo parent-landscape-logo"
+      viewBox="0 0 96 56"
       aria-hidden="true"
       focusable="false"
     >
-      {/* 참고 이미지처럼: 왼쪽에서 들어와 하트 하단을 교차한 뒤 오른쪽 위로 이어지는 한 줄 */}
+      {/* 산 능선 */}
       <path
-        className="parent-flight-heart-line"
-        d="
-          M 4 54
-          C 20 49, 31 46, 43 43
-          C 52 41, 58 38, 62 34
-          C 53 30, 47 24, 47 17
-          C 47 10, 52 6, 58 6
-          C 64 6, 68 10, 70 16
-          C 72 10, 76 6, 82 6
-          C 88 6, 93 10, 93 17
-          C 93 25, 87 33, 78 39
-          C 70 44, 61 46, 53 45
-          C 66 48, 80 46, 91 40
-          C 98 36, 104 31, 108 26
-        "
+        className="parent-landscape-mountain"
+        d="M8 35 C20 27 30 17 41 8 C44 5.5 47 5.5 50 8 C59 17 68 27 86 35"
       />
 
-      {/* 참고 이미지처럼 오른쪽 위를 향하는 명확한 비행기 실루엣 */}
-      <g
-        className="parent-flight-plane"
-        transform="translate(94 16) rotate(-21)"
-      >
-        <path d="
-          M 0 7
-          L 7 5.8
-          L 12.8 0
-          L 15.3 0.7
-          L 12.4 6
-          L 19.7 7.7
-          L 19.9 10
-          L 12.2 9.5
-          L 14.2 15
-          L 12.2 16
-          L 7 10.3
-          L 1 9.6
-          Z
-        " />
-      </g>
+      {/* 해 */}
+      <circle
+        className="parent-landscape-sun"
+        cx="76"
+        cy="17"
+        r="7.5"
+      />
+
+      {/* 아래쪽 길/강 - 참고 이미지처럼 두 개의 부드러운 곡선 */}
+      <path
+        className="parent-landscape-road parent-landscape-road-left"
+        d="M5 43 C22 46 37 41 52 44"
+      />
+      <path
+        className="parent-landscape-road parent-landscape-road-right"
+        d="M35 49 C47 54 66 51 91 47"
+      />
     </svg>
   );
 }
