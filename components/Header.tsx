@@ -27,12 +27,13 @@ function FlightHeartLogo() {
            C52 35, 61 32, 68 25"
       />
 
-      {/* 오른쪽을 향하는 비행기 - 이전보다 크게 */}
+      {/* 오른쪽 위로 날아가는 비행기 */}
       <g
         className="parent-flight-plane"
-        transform="translate(64 18) scale(1.32)"
+        transform="translate(62 17) rotate(-12) scale(1.18)"
       >
-        <path d="M0 5.2 12.5 1.1 10.1 5.2 15.2 7.1 14.2 9.2 8.8 7.5 5.9 12.2 4.3 11.4 5.8 6.7 0 5.2Z" />
+        <path d="M1 7.2 L16.8 1.2 L13.3 7 L18.2 9.4 L16.9 11.5 L11.5 9.2 L7.2 15.1 L5.3 14.2 L7.1 8.2 L1 7.2 Z" />
+        <path d="M7.1 8.2 L12.2 6.1" className="parent-flight-plane-detail" />
       </g>
     </svg>
   );
