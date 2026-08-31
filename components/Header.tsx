@@ -9,31 +9,49 @@ function FlightHeartLogo() {
   return (
     <svg
       className="parent-flight-logo"
-      viewBox="0 0 78 52"
+      viewBox="0 0 110 62"
       aria-hidden="true"
       focusable="false"
     >
-      {/* 하트 아래 연결 간격을 좁힌 비행 경로 */}
+      {/* 참고 이미지처럼: 왼쪽에서 들어와 하트 하단을 교차한 뒤 오른쪽 위로 이어지는 한 줄 */}
       <path
         className="parent-flight-heart-line"
-        d="M5 43
-           C15 37, 25 35, 35 35
-           C27 29, 23 23, 24 17
-           C25 10, 30 7, 35 11
-           C37.5 13, 39 15.5, 39 18.5
-           C39 15.5, 40.5 13, 43 11
-           C48 7, 53 10, 54 17
-           C55 23, 51 29, 43 35
-           C52 35, 61 32, 68 25"
+        d="
+          M 4 54
+          C 20 49, 31 46, 43 43
+          C 52 41, 58 38, 62 34
+          C 53 30, 47 24, 47 17
+          C 47 10, 52 6, 58 6
+          C 64 6, 68 10, 70 16
+          C 72 10, 76 6, 82 6
+          C 88 6, 93 10, 93 17
+          C 93 25, 87 33, 78 39
+          C 70 44, 61 46, 53 45
+          C 66 48, 80 46, 91 40
+          C 98 36, 104 31, 108 26
+        "
       />
 
-      {/* 오른쪽 위로 날아가는 비행기 */}
+      {/* 참고 이미지처럼 오른쪽 위를 향하는 명확한 비행기 실루엣 */}
       <g
         className="parent-flight-plane"
-        transform="translate(62 17) rotate(-12) scale(1.18)"
+        transform="translate(94 16) rotate(-21)"
       >
-        <path d="M1 7.2 L16.8 1.2 L13.3 7 L18.2 9.4 L16.9 11.5 L11.5 9.2 L7.2 15.1 L5.3 14.2 L7.1 8.2 L1 7.2 Z" />
-        <path d="M7.1 8.2 L12.2 6.1" className="parent-flight-plane-detail" />
+        <path d="
+          M 0 7
+          L 7 5.8
+          L 12.8 0
+          L 15.3 0.7
+          L 12.4 6
+          L 19.7 7.7
+          L 19.9 10
+          L 12.2 9.5
+          L 14.2 15
+          L 12.2 16
+          L 7 10.3
+          L 1 9.6
+          Z
+        " />
       </g>
     </svg>
   );
