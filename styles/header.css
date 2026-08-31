@@ -18,12 +18,10 @@
   gap: 36px;
 }
 
-/* 브랜드 */
-
 .parent-brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 11px;
   flex-shrink: 0;
   color: #173e32;
   text-decoration: none;
@@ -43,60 +41,31 @@
 
 .parent-brand-text span {
   margin-top: 5px;
-  color: #8a877e;
+  color: #9a6a43;
   font-size: 10px;
+  font-weight: 600;
   letter-spacing: -0.2px;
 }
 
-/* 간단한 부모님 심볼 */
-
-.parent-brand-symbol {
-  position: relative;
-  width: 43px;
-  height: 38px;
+/* 하트 궤적 + 비행기 */
+.parent-flight-logo {
+  width: 58px;
+  height: 42px;
+  flex: 0 0 58px;
+  overflow: visible;
 }
 
-.parent-symbol-head {
-  position: absolute;
-  top: 1px;
-  width: 10px;
-  height: 10px;
-  border: 2px solid #b88451;
-  border-radius: 50%;
+.parent-flight-heart-line {
+  fill: none;
+  stroke: #234f40;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.parent-symbol-head-one {
-  left: 7px;
+.parent-flight-plane {
+  fill: #b47a4a;
 }
-
-.parent-symbol-head-two {
-  right: 7px;
-  border-color: #547764;
-}
-
-.parent-symbol-line {
-  position: absolute;
-  bottom: 5px;
-  width: 24px;
-  height: 18px;
-  border: 2px solid;
-  border-top: 0;
-  border-radius: 0 0 24px 24px;
-}
-
-.parent-symbol-line-one {
-  left: 0;
-  border-color: #b88451;
-  transform: rotate(-25deg);
-}
-
-.parent-symbol-line-two {
-  right: 0;
-  border-color: #547764;
-  transform: rotate(25deg);
-}
-
-/* PC 메뉴 */
 
 .parent-desktop-nav {
   display: flex;
@@ -115,9 +84,7 @@
   font-weight: 750;
   white-space: nowrap;
   text-decoration: none;
-  transition:
-    color 0.18s ease,
-    transform 0.18s ease;
+  transition: color 0.18s ease, transform 0.18s ease;
 }
 
 .parent-desktop-nav > a:hover {
@@ -139,8 +106,6 @@
 .parent-header-search:hover {
   background: #f3f5f1;
 }
-
-/* 모바일 */
 
 .parent-mobile-menu-button {
   display: none;
@@ -210,7 +175,7 @@
   }
 
   .parent-brand {
-    gap: 8px;
+    gap: 7px;
   }
 
   .parent-brand-text strong {
@@ -221,10 +186,9 @@
     display: none;
   }
 
-  .parent-brand-symbol {
-    width: 35px;
-    height: 32px;
-    transform: scale(0.85);
-    transform-origin: left center;
+  .parent-flight-logo {
+    width: 46px;
+    height: 34px;
+    flex-basis: 46px;
   }
 }

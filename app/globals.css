@@ -5879,7 +5879,7 @@ body:has(.places-map-page-v2) .footer {
 
 
 /* =========================================================
-   HOME MOBILE DESIGN PASS V3
+   HOME MOBILE DESIGN PASS V4
    - 실제 iPhone 캡처 기준 전체 밀도/여백 정리
    - PC/태블릿 영향 없음
    - 기능/데이터/가로 스크롤 구조 유지
@@ -5899,11 +5899,11 @@ body:has(.places-map-page-v2) .footer {
     gap: 8px !important;
   }
 
-  .parent-site-header .parent-brand-symbol {
-    width: 36px !important;
-    height: 32px !important;
-    transform: scale(.88);
-    transform-origin: center;
+  .parent-site-header .parent-flight-logo {
+    width: 46px !important;
+    height: 34px !important;
+    flex: 0 0 46px !important;
+    transform: none !important;
   }
 
   .parent-site-header .parent-brand-text strong {
@@ -5927,8 +5927,8 @@ body:has(.places-map-page-v2) .footer {
 
   /* ---------- HERO ---------- */
   .parent-home .parent-hero {
-    padding-top: 26px !important;
-    padding-bottom: 16px !important;
+    padding-top: 22px !important;
+    padding-bottom: 12px !important;
   }
 
   .parent-home .parent-hero > .container,
@@ -5962,7 +5962,7 @@ body:has(.places-map-page-v2) .footer {
 
   .parent-home .parent-hero-copy h1 {
     margin: 0 !important;
-    font-size: 38px !important;
+    font-size: 35px !important;
     line-height: 1.12 !important;
     letter-spacing: -2px !important;
     word-break: keep-all !important;
@@ -6172,8 +6172,8 @@ body:has(.places-map-page-v2) .footer {
   }
 
   .parent-home .home-content-section.is-empty {
-    padding-top: 18px !important;
-    padding-bottom: 18px !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
   }
 
   .parent-home .home-section-heading {
@@ -6216,11 +6216,11 @@ body:has(.places-map-page-v2) .footer {
   }
 
   .parent-home .home-place-card-v2 {
-    flex-basis: 74% !important;
+    flex-basis: 68% !important;
   }
 
   .parent-home .home-place-card-v2 .home-place-image {
-    min-height: 210px !important;
+    min-height: 185px !important;
     border-radius: 17px !important;
   }
 
@@ -6253,12 +6253,12 @@ body:has(.places-map-page-v2) .footer {
 
   /* ---------- EMPTY STATES ---------- */
   .parent-home .home-content-section.is-empty .home-section-heading {
-    margin-bottom: 9px !important;
+    margin-bottom: 7px !important;
   }
 
   .parent-home .home-empty-section-v2 {
     width: 100% !important;
-    min-height: 62px !important;
+    min-height: 58px !important;
     margin: 0 !important;
     padding: 11px 13px !important;
     gap: 10px !important;
@@ -6285,8 +6285,8 @@ body:has(.places-map-page-v2) .footer {
 
   /* ---------- COURSE ---------- */
   .parent-home .parent-course-section {
-    padding-top: 34px !important;
-    padding-bottom: 36px !important;
+    padding-top: 30px !important;
+    padding-bottom: 28px !important;
   }
 
   .parent-home .parent-course-section > .container,
@@ -6366,7 +6366,7 @@ body:has(.places-map-page-v2) .footer {
 
   /* ---------- GIFT ---------- */
   .parent-home .parent-gift-section {
-    padding-top: 24px !important;
+    padding-top: 18px !important;
     padding-bottom: 36px !important;
   }
 
@@ -6472,7 +6472,7 @@ body:has(.places-map-page-v2) .footer {
 
 @media (max-width: 390px) {
   .parent-home .parent-hero-copy h1 {
-    font-size: 35px !important;
+    font-size: 33px !important;
   }
 
   .parent-home .parent-category-card {
@@ -6485,10 +6485,50 @@ body:has(.places-map-page-v2) .footer {
   }
 
   .parent-home .home-place-card-v2 {
-    flex-basis: 78% !important;
+    flex-basis: 72% !important;
   }
 
   .parent-home .parent-course-section .parent-course-card {
     padding-inline: 17px !important;
+  }
+}
+
+
+/* ==================================================
+   HEADER LOGO V6 - HEART FLIGHT
+   Header.tsx의 SVG 로고 전용 스타일
+================================================== */
+
+.parent-site-header .parent-flight-logo {
+  display: block;
+  width: 58px;
+  height: 42px;
+  flex: 0 0 58px;
+  overflow: visible;
+}
+
+.parent-site-header .parent-flight-heart-line {
+  fill: none;
+  stroke: #234f40;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.parent-site-header .parent-flight-plane {
+  fill: #b47a4a;
+}
+
+.parent-site-header .parent-brand-text span {
+  color: #9a6a43;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .parent-site-header .parent-flight-logo {
+    width: 46px !important;
+    height: 34px !important;
+    flex: 0 0 46px !important;
+    transform: none !important;
   }
 }
