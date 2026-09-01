@@ -1181,6 +1181,27 @@ export default async function AdminPlacesPage({
       : "비공개"}
   </span>
 
+  <a
+    href={`/admin/places/${place.slug}/edit`}
+    style={{
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      minHeight: "36px",
+      padding: "0 13px",
+      border: "1px solid #07866c",
+      borderRadius: "9px",
+      background: "#ffffff",
+      color: "#07866c",
+      fontSize: "12px",
+      fontWeight: 800,
+      textDecoration: "none",
+      whiteSpace: "nowrap",
+    }}
+  >
+    정보 수정
+  </a>
+
   <form
     action="/api/admin/places/image"
     method="post"
