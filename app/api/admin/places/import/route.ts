@@ -27,6 +27,20 @@ const ALLOWED_PLACE_TYPES = new Set([
   "accommodation",
 ]);
 
+const ALLOWED_ENVIRONMENT_TYPES = new Set([
+  "",
+  "indoor",
+  "outdoor",
+  "mixed",
+]);
+
+const ALLOWED_SEATING_TYPES = new Set([
+  "",
+  "chair",
+  "floor",
+  "mixed",
+]);
+
 function adminUrl(
   request: Request,
   type: "success" | "error",
@@ -57,6 +71,28 @@ function redirectWithError(
     ),
     303
   );
+}
+
+function isValidHttpUrl(
+  value: string | null
+) {
+  if (!value) {
+    return true;
+  }
+
+  try {
+    const url =
+      new URL(value);
+
+    return [
+      "http:",
+      "https:",
+    ].includes(
+      url.protocol
+    );
+  } catch {
+    return false;
+  }
 }
 
 function validateRow(
@@ -146,6 +182,48 @@ function validateRow(
     );
   }
 
+  if (
+    row.environment_type &&
+    !ALLOWED_ENVIRONMENT_TYPES.has(
+      row.environment_type
+    )
+  ) {
+    errors.push(
+      "environment_type은 indoor, outdoor, mixed 중 하나여야 합니다."
+    );
+  }
+
+  if (
+    row.seating_type &&
+    !ALLOWED_SEATING_TYPES.has(
+      row.seating_type
+    )
+  ) {
+    errors.push(
+      "seating_type은 chair, floor, mixed 중 하나여야 합니다."
+    );
+  }
+
+  if (
+    !isValidHttpUrl(
+      row.website_url
+    )
+  ) {
+    errors.push(
+      "홈페이지 주소가 올바르지 않습니다."
+    );
+  }
+
+  if (
+    !isValidHttpUrl(
+      row.image_url
+    )
+  ) {
+    errors.push(
+      "대표사진 URL이 올바르지 않습니다."
+    );
+  }
+
   return errors;
 }
 
@@ -188,10 +266,6 @@ async function fillCoordinates(
         continue;
       }
 
-      /*
-       * 기존 카카오 장소검색 함수를
-       * 일반 장소 검색에도 재사용합니다.
-       */
       const keywordResult =
         await geocodeValleyByKeyword(
           row.name,
@@ -575,7 +649,7 @@ export async function POST(
         business_hours:
           row.business_hours,
 
-        closed_days: 
+        closed_days:
           row.closed_days,
 
         admission_fee:
@@ -605,22 +679,32 @@ export async function POST(
         tags:
           row.tags,
 
-        /*
-         * 일괄등록 후 직접 확인한 다음
-         * 공개하도록 비공개로 시작합니다.
-         */
-        is_published:
-          false,
+        visit_tips:
+          row.visit_tips,
+
+        faq:
+          row.faq,
+
+        blog_reviews:
+          row.blog_reviews,
 
         image_url:
-          null,
+          row.image_url,
 
         is_editor_pick:
-          false,
+          row.is_editor_pick,
+
+        is_published:
+          row.is_published,
 
         is_partner:
           false,
 
+        recommendation_score:
+          0,
+
+        created_by:
+          user.id,
       })
     );
 
@@ -656,6 +740,21 @@ export async function POST(
       ` / 중복 ${skippedCount}개 제외`;
   }
 
+  const publishedCount =
+    newRows.filter(
+      (row) =>
+        row.is_published
+    ).length;
+
+  message +=
+    ` / 공개 ${publishedCount}개`;
+
+  message +=
+    ` / 비공개 ${
+      newRows.length -
+      publishedCount
+    }개`;
+
   message +=
     ` / 주소좌표 ${coordinateResult.addressSuccessCount}개`;
 
@@ -669,9 +768,6 @@ export async function POST(
     message +=
       ` / 좌표 확인 필요 ${coordinateResult.failedCount}개`;
   }
-
-  message +=
-    ". 모두 비공개 상태입니다.";
 
   return NextResponse.redirect(
     adminUrl(

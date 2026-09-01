@@ -1,19 +1,23 @@
 import * as XLSX from "xlsx";
 
-export type PlaceImportType =
-  | "attraction"
-  | "restaurant"
-  | "cafe"
-  | "accommodation";
+export type PlaceImportFaqItem = {
+  question: string;
+  answer: string;
+};
+
+export type PlaceImportBlogReviewItem = {
+  title: string;
+  url: string;
+  source: string | null;
+  description: string | null;
+};
 
 export type PlaceImportRow = {
   rowNumber: number;
 
-  place_type: PlaceImportType;
-
+  place_type: string;
   name: string;
   slug: string;
-
   region: string;
   city: string;
   address: string;
@@ -24,313 +28,56 @@ export type PlaceImportRow = {
   phone: string | null;
   website_url: string | null;
 
+  business_hours: string | null;
+  closed_days: string | null;
+  admission_fee: string | null;
+
+  environment_type: string | null;
+  seating_type: string | null;
+  cuisine_type: string | null;
+
   summary: string;
   description: string | null;
+  parent_recommendation: string | null;
 
-  parent_recommendation:
-    | string
-    | null;
-
-  business_hours:
-    | string
-    | null;
-
-    closed_days:
-  | string
-  | null;
-
-  admission_fee:
-    | string
-    | null;
+  tags: string[];
+  visit_tips: string[] | null;
+  faq: PlaceImportFaqItem[] | null;
+  blog_reviews: PlaceImportBlogReviewItem[] | null;
 
   parking: boolean | null;
   restroom: boolean | null;
+  walking_easy: boolean | null;
+  nearby_cafe: boolean | null;
 
-  walking_easy:
-    | boolean
-    | null;
+  is_editor_pick: boolean;
+  is_published: boolean;
 
-  nearby_cafe:
-    | boolean
-    | null;
-
-  environment_type:
-    | "indoor"
-    | "outdoor"
-    | "mixed"
-    | null;
-
-  seating_type:
-    | "chair"
-    | "floor"
-    | "mixed"
-    | null;
-
-  cuisine_type:
-    | string
-    | null;
-
-  tags: string[];
+  image_url: string | null;
 };
 
-type ExcelRow = Record<
-  string,
-  unknown
->;
+type RawExcelRow = Record<string, unknown>;
 
-function text(
-  value: unknown
-): string {
-  if (
-    value === null ||
-    value === undefined
-  ) {
+function cleanText(value: unknown) {
+  if (value === null || value === undefined) {
     return "";
   }
 
-  return String(value).trim();
+  return String(value)
+    .replace(/\r\n/g, "\n")
+    .trim();
 }
 
-function nullableText(
-  value: unknown
-): string | null {
-  const valueText =
-    text(value);
-
-  return valueText
-    ? valueText
-    : null;
+function nullableText(value: unknown) {
+  const cleaned = cleanText(value);
+  return cleaned || null;
 }
 
-function numberOrNull(
-  value: unknown
-): number | null {
-  if (
-    value === null ||
-    value === undefined ||
-    value === ""
-  ) {
-    return null;
-  }
-
-  const parsed =
-    Number(value);
-
-  return Number.isFinite(
-    parsed
-  )
-    ? parsed
-    : null;
-}
-
-function booleanOrNull(
-  value: unknown
-): boolean | null {
-  const normalized =
-    text(value)
-      .toLowerCase()
-      .replace(/\s+/g, "");
-
-  if (!normalized) {
-    return null;
-  }
-
-  if (
-    [
-      "true",
-      "1",
-      "y",
-      "yes",
-      "예",
-      "네",
-      "가능",
-      "있음",
-      "o",
-      "○",
-    ].includes(normalized)
-  ) {
-    return true;
-  }
-
-  if (
-    [
-      "false",
-      "0",
-      "n",
-      "no",
-      "아니오",
-      "아니요",
-      "불가",
-      "없음",
-      "x",
-      "×",
-    ].includes(normalized)
-  ) {
-    return false;
-  }
-
-  return null;
-}
-
-function parsePlaceType(
-  value: unknown
-): PlaceImportType {
-  const normalized =
-    text(value)
-      .toLowerCase()
-      .replace(/\s+/g, "");
-
-  switch (normalized) {
-    case "attraction":
-    case "가볼만한곳":
-    case "관광지":
-    case "여행지":
-      return "attraction";
-
-    case "restaurant":
-    case "맛집":
-    case "음식점":
-    case "식당":
-      return "restaurant";
-
-    case "cafe":
-    case "카페":
-      return "cafe";
-
-    case "accommodation":
-    case "숙소":
-    case "호텔":
-    case "펜션":
-    case "리조트":
-      return "accommodation";
-
-    default:
-      return "attraction";
-  }
-}
-
-function parseEnvironmentType(
-  value: unknown
-):
-  | "indoor"
-  | "outdoor"
-  | "mixed"
-  | null {
-  const normalized =
-    text(value)
-      .toLowerCase()
-      .replace(/\s+/g, "");
-
-  if (!normalized) {
-    return null;
-  }
-
-  if (
-    normalized === "indoor" ||
-    normalized === "실내"
-  ) {
-    return "indoor";
-  }
-
-  if (
-    normalized === "outdoor" ||
-    normalized === "실외"
-  ) {
-    return "outdoor";
-  }
-
-  if (
-    normalized === "mixed" ||
-    normalized ===
-      "실내+실외" ||
-    normalized ===
-      "실내외"
-  ) {
-    return "mixed";
-  }
-
-  return null;
-}
-
-function parseSeatingType(
-  value: unknown
-):
-  | "chair"
-  | "floor"
-  | "mixed"
-  | null {
-  const normalized =
-    text(value)
-      .toLowerCase()
-      .replace(/\s+/g, "");
-
-  if (!normalized) {
-    return null;
-  }
-
-  if (
-    normalized === "chair" ||
-    normalized ===
-      "의자식" ||
-    normalized === "테이블"
-  ) {
-    return "chair";
-  }
-
-  if (
-    normalized === "floor" ||
-    normalized === "좌식"
-  ) {
-    return "floor";
-  }
-
-  if (
-    normalized === "mixed" ||
-    normalized ===
-      "의자식+좌식" ||
-    normalized ===
-      "테이블+좌식"
-  ) {
-    return "mixed";
-  }
-
-  return null;
-}
-
-function parseTags(
-  value: unknown
-): string[] {
-  const raw =
-    text(value);
-
-  if (!raw) {
-    return [];
-  }
-
-  return raw
-    .split(/[,|\n]/)
-    .map(
-      (item) =>
-        item.trim()
-    )
-    .filter(Boolean);
-}
-
-/*
- * 엑셀 헤더 이름을 여러 형태로
- * 사용할 수 있게 합니다.
- *
- * 예:
- * 장소명 / name
- * 주소 / address
- */
-function getValue(
-  row: ExcelRow,
-  keys: string[]
-): unknown {
-  for (
-    const key of keys
-  ) {
+function getCell(
+  row: RawExcelRow,
+  ...keys: string[]
+) {
+  for (const key of keys) {
     if (
       Object.prototype.hasOwnProperty.call(
         row,
@@ -341,16 +88,257 @@ function getValue(
     }
   }
 
-  return undefined;
+  return "";
+}
+
+function numberOrNull(
+  value: unknown
+): number | null {
+  const text = cleanText(value);
+
+  if (!text) {
+    return null;
+  }
+
+  const number = Number(
+    text.replace(/,/g, "")
+  );
+
+  return Number.isFinite(number)
+    ? number
+    : null;
+}
+
+function booleanOrNull(
+  value: unknown
+): boolean | null {
+  const text = cleanText(value)
+    .toLowerCase();
+
+  if (!text) {
+    return null;
+  }
+
+  const trueValues = new Set([
+    "true",
+    "1",
+    "yes",
+    "y",
+    "예",
+    "네",
+    "가능",
+    "있음",
+    "o",
+    "○",
+    "체크",
+  ]);
+
+  const falseValues = new Set([
+    "false",
+    "0",
+    "no",
+    "n",
+    "아니오",
+    "아니요",
+    "불가",
+    "없음",
+    "x",
+    "×",
+  ]);
+
+  if (trueValues.has(text)) {
+    return true;
+  }
+
+  if (falseValues.has(text)) {
+    return false;
+  }
+
+  return null;
+}
+
+function booleanWithDefaultFalse(
+  value: unknown
+) {
+  return booleanOrNull(value) === true;
+}
+
+function tagsValue(
+  value: unknown
+) {
+  const text = cleanText(value);
+
+  if (!text) {
+    return [];
+  }
+
+  return text
+    .split(/[,\n]/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function visitTipsValue(
+  value: unknown
+): string[] | null {
+  const text = cleanText(value);
+
+  if (!text) {
+    return null;
+  }
+
+  const items = text
+    .split("\n")
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+  return items.length > 0
+    ? items
+    : null;
+}
+
+function faqValue(
+  value: unknown
+): PlaceImportFaqItem[] | null {
+  const text = cleanText(value);
+
+  if (!text) {
+    return null;
+  }
+
+  const items = text
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const separatorIndex =
+        line.indexOf("|");
+
+      if (separatorIndex === -1) {
+        return null;
+      }
+
+      const question =
+        line
+          .slice(0, separatorIndex)
+          .trim();
+
+      const answer =
+        line
+          .slice(separatorIndex + 1)
+          .trim();
+
+      if (!question || !answer) {
+        return null;
+      }
+
+      return {
+        question,
+        answer,
+      };
+    })
+    .filter(
+      (
+        item
+      ): item is PlaceImportFaqItem =>
+        item !== null
+    );
+
+  return items.length > 0
+    ? items
+    : null;
+}
+
+function blogReviewsValue(
+  value: unknown
+): PlaceImportBlogReviewItem[] | null {
+  const text = cleanText(value);
+
+  if (!text) {
+    return null;
+  }
+
+  const items = text
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const parts = line
+        .split("|")
+        .map((part) => part.trim());
+
+      const title =
+        parts[0] || "";
+
+      const url =
+        parts[1] || "";
+
+      const source =
+        parts[2] || null;
+
+      const description =
+        parts[3] || null;
+
+      if (!title || !url) {
+        return null;
+      }
+
+      try {
+        const parsedUrl =
+          new URL(url);
+
+        if (
+          ![
+            "http:",
+            "https:",
+          ].includes(
+            parsedUrl.protocol
+          )
+        ) {
+          return null;
+        }
+      } catch {
+        return null;
+      }
+
+      return {
+        title,
+        url,
+        source,
+        description,
+      };
+    })
+    .filter(
+      (
+        item
+      ): item is PlaceImportBlogReviewItem =>
+        item !== null
+    );
+
+  return items.length > 0
+    ? items
+    : null;
+}
+
+function rowHasContent(
+  row: RawExcelRow
+) {
+  return Object.values(row).some(
+    (value) =>
+      cleanText(value) !== ""
+  );
 }
 
 export function readPlaceExcel(
   buffer: ArrayBuffer
 ): PlaceImportRow[] {
   const workbook =
-    XLSX.read(buffer, {
-      type: "array",
-    });
+    XLSX.read(
+      buffer,
+      {
+        type: "array",
+      }
+    );
 
   const firstSheetName =
     workbook.SheetNames[0];
@@ -364,332 +352,311 @@ export function readPlaceExcel(
       firstSheetName
     ];
 
-  if (!sheet) {
-    return [];
-  }
-
   const rawRows =
-    XLSX.utils.sheet_to_json<
-      ExcelRow
-    >(sheet, {
-      defval: "",
-      raw: false,
-    });
+    XLSX.utils.sheet_to_json<RawExcelRow>(
+      sheet,
+      {
+        defval: "",
+        raw: false,
+      }
+    );
 
   return rawRows
     .map(
       (
         row,
         index
-      ): PlaceImportRow => {
+      ): PlaceImportRow | null => {
+        if (!rowHasContent(row)) {
+          return null;
+        }
+
+        const websiteUrl =
+          nullableText(
+            getCell(
+              row,
+              "website_url",
+              "홈페이지"
+            )
+          );
+
+        const imageUrl =
+          nullableText(
+            getCell(
+              row,
+              "image_url",
+              "대표사진URL"
+            )
+          );
+
         return {
-          /*
-           * 엑셀 1행은 헤더이므로
-           * 실제 데이터 행 번호는 +2
-           */
           rowNumber:
             index + 2,
 
           place_type:
-            parsePlaceType(
-              getValue(
+            cleanText(
+              getCell(
                 row,
-                [
-                  "place_type",
-                  "장소유형",
-                  "장소 유형",
-                  "카테고리",
-                ]
+                "place_type",
+                "장소유형"
+              )
+            ).toLowerCase(),
+
+          name:
+            cleanText(
+              getCell(
+                row,
+                "name",
+                "장소명"
               )
             ),
 
-          name: text(
-            getValue(
-              row,
-              [
-                "name",
-                "장소명",
-                "장소 이름",
-                "이름",
-              ]
-            )
-          ),
-
-          slug: text(
-            getValue(
-              row,
-              [
+          slug:
+            cleanText(
+              getCell(
+                row,
                 "slug",
-                "영문식별자",
-                "영문 식별자",
-              ]
-            )
-          ).toLowerCase(),
+                "영문식별자"
+              )
+            ).toLowerCase(),
 
-          region: text(
-            getValue(
-              row,
-              [
+          region:
+            cleanText(
+              getCell(
+                row,
                 "region",
-                "지역",
-                "시도",
-                "시·도",
-              ]
-            )
-          ),
+                "지역"
+              )
+            ),
 
-          city: text(
-            getValue(
-              row,
-              [
+          city:
+            cleanText(
+              getCell(
+                row,
                 "city",
-                "시군구",
-                "시·군·구",
-                "시군",
-              ]
-            )
-          ),
+                "시군구"
+              )
+            ),
 
-          address: text(
-            getValue(
-              row,
-              [
+          address:
+            cleanText(
+              getCell(
+                row,
                 "address",
-                "주소",
-                "도로명주소",
-                "도로명 주소",
-              ]
-            )
-          ),
+                "주소"
+              )
+            ),
 
           latitude:
             numberOrNull(
-              getValue(
+              getCell(
                 row,
-                [
-                  "latitude",
-                  "위도",
-                ]
+                "latitude",
+                "위도"
               )
             ),
 
           longitude:
             numberOrNull(
-              getValue(
+              getCell(
                 row,
-                [
-                  "longitude",
-                  "경도",
-                ]
+                "longitude",
+                "경도"
               )
             ),
 
           phone:
             nullableText(
-              getValue(
+              getCell(
                 row,
-                [
-                  "phone",
-                  "전화번호",
-                  "전화",
-                ]
+                "phone",
+                "전화번호"
               )
             ),
 
           website_url:
-            nullableText(
-              getValue(
-                row,
-                [
-                  "website_url",
-                  "홈페이지",
-                  "웹사이트",
-                  "홈페이지URL",
-                ]
-              )
-            ),
-
-          summary: text(
-            getValue(
-              row,
-              [
-                "summary",
-                "한줄소개",
-                "한줄 소개",
-                "소개",
-              ]
-            )
-          ),
-
-          description:
-            nullableText(
-              getValue(
-                row,
-                [
-                  "description",
-                  "상세설명",
-                  "상세 설명",
-                ]
-              )
-            ),
-
-          parent_recommendation:
-            nullableText(
-              getValue(
-                row,
-                [
-                  "parent_recommendation",
-                  "부모님추천",
-                  "부모님 추천",
-                  "부모님과 함께 가기 좋은 이유",
-                ]
-              )
-            ),
+            websiteUrl,
 
           business_hours:
             nullableText(
-              getValue(
+              getCell(
                 row,
-                [
-                  "business_hours",
-                  "운영시간",
-                  "영업시간",
-                ]
+                "business_hours",
+                "운영시간"
               )
             ),
 
-            closed_days:
-  nullableText(
-    getValue(
-      row,
-      [
-        "closed_days",
-        "휴무일",
-        "휴관일",
-        "정기휴무",
-      ]
-    )
-  ),
-  
+          closed_days:
+            nullableText(
+              getCell(
+                row,
+                "closed_days",
+                "휴무일"
+              )
+            ),
+
           admission_fee:
             nullableText(
-              getValue(
+              getCell(
                 row,
-                [
-                  "admission_fee",
-                  "입장료",
-                  "이용요금",
-                  "요금",
-                ]
-              )
-            ),
-
-          parking:
-            booleanOrNull(
-              getValue(
-                row,
-                [
-                  "parking",
-                  "주차",
-                  "주차가능",
-                ]
-              )
-            ),
-
-          restroom:
-            booleanOrNull(
-              getValue(
-                row,
-                [
-                  "restroom",
-                  "화장실",
-                ]
-              )
-            ),
-
-          walking_easy:
-            booleanOrNull(
-              getValue(
-                row,
-                [
-                  "walking_easy",
-                  "걷기편함",
-                  "걷기 편함",
-                ]
-              )
-            ),
-
-          nearby_cafe:
-            booleanOrNull(
-              getValue(
-                row,
-                [
-                  "nearby_cafe",
-                  "주변카페",
-                  "주변 카페",
-                ]
+                "admission_fee",
+                "이용요금"
               )
             ),
 
           environment_type:
-            parseEnvironmentType(
-              getValue(
+            nullableText(
+              getCell(
                 row,
-                [
-                  "environment_type",
-                  "환경",
-                  "실내실외",
-                  "실내/실외",
-                ]
+                "environment_type",
+                "실내외"
               )
             ),
 
           seating_type:
-            parseSeatingType(
-              getValue(
+            nullableText(
+              getCell(
                 row,
-                [
-                  "seating_type",
-                  "좌석형태",
-                  "좌석 형태",
-                ]
+                "seating_type",
+                "좌석형태"
               )
             ),
 
           cuisine_type:
             nullableText(
-              getValue(
+              getCell(
                 row,
-                [
-                  "cuisine_type",
-                  "음식종류",
-                  "음식 종류",
-                ]
+                "cuisine_type",
+                "음식종류"
+              )
+            ),
+
+          summary:
+            cleanText(
+              getCell(
+                row,
+                "summary",
+                "한줄소개"
+              )
+            ),
+
+          description:
+            nullableText(
+              getCell(
+                row,
+                "description",
+                "상세설명"
+              )
+            ),
+
+          parent_recommendation:
+            nullableText(
+              getCell(
+                row,
+                "parent_recommendation",
+                "부모님추천이유"
               )
             ),
 
           tags:
-            parseTags(
-              getValue(
+            tagsValue(
+              getCell(
                 row,
-                [
-                  "tags",
-                  "태그",
-                  "검색태그",
-                  "검색 태그",
-                ]
+                "tags",
+                "검색태그"
               )
             ),
+
+          visit_tips:
+            visitTipsValue(
+              getCell(
+                row,
+                "visit_tips",
+                "방문꿀팁"
+              )
+            ),
+
+          faq:
+            faqValue(
+              getCell(
+                row,
+                "faq",
+                "FAQ"
+              )
+            ),
+
+          blog_reviews:
+            blogReviewsValue(
+              getCell(
+                row,
+                "blog_reviews",
+                "블로그후기"
+              )
+            ),
+
+          parking:
+            booleanOrNull(
+              getCell(
+                row,
+                "parking",
+                "주차"
+              )
+            ),
+
+          restroom:
+            booleanOrNull(
+              getCell(
+                row,
+                "restroom",
+                "화장실"
+              )
+            ),
+
+          walking_easy:
+            booleanOrNull(
+              getCell(
+                row,
+                "walking_easy",
+                "걷기편함"
+              )
+            ),
+
+          nearby_cafe:
+            booleanOrNull(
+              getCell(
+                row,
+                "nearby_cafe",
+                "주변카페"
+              )
+            ),
+
+          is_editor_pick:
+            booleanWithDefaultFalse(
+              getCell(
+                row,
+                "is_editor_pick",
+                "엄마랑아빠랑추천"
+              )
+            ),
+
+          is_published:
+            booleanWithDefaultFalse(
+              getCell(
+                row,
+                "is_published",
+                "바로공개"
+              )
+            ),
+
+          image_url:
+            imageUrl,
         };
       }
     )
-    /*
-     * 완전히 빈 행은 제거
-     */
     .filter(
-      (row) =>
-        row.name ||
-        row.slug ||
-        row.address
+      (
+        row
+      ): row is PlaceImportRow =>
+        row !== null
     );
 }
