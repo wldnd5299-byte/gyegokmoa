@@ -320,6 +320,54 @@ function BasicInfoRow({
   );
 }
 
+
+function StructuredInfoList({
+  value,
+}: {
+  value: string;
+}) {
+  const rows = value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const separatorIndex = line.indexOf("|");
+
+      if (separatorIndex === -1) {
+        return {
+          label: "",
+          value: line,
+        };
+      }
+
+      return {
+        label: line.slice(0, separatorIndex).trim(),
+        value: line.slice(separatorIndex + 1).trim(),
+      };
+    });
+
+  return (
+    <div className="place-structured-info">
+      {rows.map((row, index) => (
+        <div
+          className="place-structured-info-row"
+          key={`${row.label}-${row.value}-${index}`}
+        >
+          {row.label && (
+            <span className="place-structured-info-label">
+              {row.label}
+            </span>
+          )}
+
+          <span className="place-structured-info-value">
+            {row.value}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function RelatedPlaceCard({
   place,
 }: {
@@ -780,11 +828,9 @@ export default async function PlaceDetailPage({
                   }
                   label="운영시간"
                 >
-                  <p>
-                    {
-                      place.business_hours
-                    }
-                  </p>
+                  <StructuredInfoList
+                    value={place.business_hours}
+                  />
                 </BasicInfoRow>
               )}
 
@@ -799,11 +845,9 @@ export default async function PlaceDetailPage({
                   }
                   label="이용요금"
                 >
-                  <p>
-                    {
-                      place.admission_fee
-                    }
-                  </p>
+                  <StructuredInfoList
+                    value={place.admission_fee}
+                  />
                 </BasicInfoRow>
               )}
 
