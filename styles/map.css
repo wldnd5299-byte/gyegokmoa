@@ -1921,128 +1921,133 @@
     font-size: 10px;
   }
 }
+
+
 /* =========================================================
-   MAP - WIDE PC LAYOUT
-   PC 지도 화면 확장 / 모바일 유지
+   MOBILE SELECTED PLACE CARD
+   모바일: 지도 마커 선택 후 하단에 간단한 장소 카드 표시
    ========================================================= */
 
-@media (min-width: 1200px) {
-
-  /* 지도 페이지의 주요 영역만 넓게 사용 */
-  .places-map-page .places-map-compact-header .container,
-  .places-map-page .map-unified-search-section .container,
-  .places-map-page .places-map-category-section .container,
-  .places-map-page .map-region-section .container,
-  .places-map-page .places-map-split-section .container {
-    width: calc(100% - 64px);
-    max-width: 1680px;
-  }
-
-  /* 상단 제목 */
-  .places-map-compact-header {
-    padding-top: 42px;
-    padding-bottom: 28px;
-  }
-
-  .places-map-compact-heading h1 {
-    font-size: 40px;
-  }
-
-  .places-map-compact-heading p {
-    font-size: 15px;
-  }
-
-  /* 검색창도 넓어진 본문 폭에 맞춤 */
-  .map-unified-search-section {
-    padding-top: 26px;
-  }
-
-  .map-unified-search-box {
-    padding: 22px 24px;
-    border-radius: 20px;
-  }
-
-  .map-unified-search-form {
-    min-height: 56px;
-  }
-
-  .map-unified-search-form input {
-    font-size: 15px;
-  }
-
-  /* 핵심: 장소 목록 + 지도 */
-  .places-map-split {
-    grid-template-columns:
-      400px
-      minmax(0, 1fr);
-
-    gap: 18px;
-  }
-
-  /* 왼쪽 장소 목록 */
-  .places-map-sidebar {
-    height: 740px;
-    min-height: 740px;
-  }
-
-  /* 오른쪽 지도 */
-  .places-map-split .places-map-canvas {
-    height: 740px;
-    min-height: 740px;
-    border-radius: 24px;
-  }
-
-  /* 장소 카드 약간 확대 */
-  .places-map-list-card-main {
-    grid-template-columns:
-      120px
-      minmax(0, 1fr);
-
-    gap: 14px;
-    padding: 11px;
-  }
-
-  .places-map-list-thumb {
-    min-height: 100px;
-  }
-
-  .places-map-list-card-info > strong {
-    font-size: 17px;
-  }
+.places-map-mobile-selected-card {
+  display: none;
 }
 
-
-/* =========================================================
-   LARGE DESKTOP
-   1600px 이상에서는 더 시원하게
-   ========================================================= */
-
-@media (min-width: 1600px) {
-
-  .places-map-page .places-map-compact-header .container,
-  .places-map-page .map-unified-search-section .container,
-  .places-map-page .places-map-category-section .container,
-  .places-map-page .map-region-section .container,
-  .places-map-page .places-map-split-section .container {
-    width: calc(100% - 80px);
-    max-width: 1760px;
-  }
-
+@media (max-width: 760px) {
+  /* 모바일에서는 PC용 왼쪽 전체 목록을 숨기고 지도 중심으로 사용 */
   .places-map-split {
-    grid-template-columns:
-      420px
-      minmax(0, 1fr);
-
-    gap: 20px;
+    display: block;
   }
 
   .places-map-sidebar {
-    height: 780px;
-    min-height: 780px;
+    display: none;
+  }
+
+  .places-map-map-column {
+    width: 100%;
   }
 
   .places-map-split .places-map-canvas {
-    height: 780px;
-    min-height: 780px;
+    height: 58vh;
+    min-height: 460px;
+    max-height: 620px;
+  }
+
+  .places-map-mobile-selected-card {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr) 28px;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 10px 10px 10px 10px;
+    border: 1px solid #e1e5e0;
+    border-radius: 18px;
+    background: #ffffff;
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 10px 26px rgba(35, 54, 45, 0.10);
+  }
+
+  .places-map-mobile-selected-card:active {
+    transform: scale(0.995);
+  }
+
+  .places-map-mobile-selected-thumb {
+    position: relative;
+    width: 92px;
+    height: 82px;
+    overflow: hidden;
+    border-radius: 13px;
+    background-color: #eef1ed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .places-map-mobile-selected-thumb > span {
+    position: absolute;
+    left: 7px;
+    bottom: 7px;
+    padding: 4px 7px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.94);
+    color: #315e4e;
+    font-size: 9px;
+    font-weight: 850;
+  }
+
+  .places-map-mobile-selected-info {
+    min-width: 0;
+  }
+
+  .places-map-mobile-selected-info > span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 5px;
+    color: #8a928e;
+    font-size: 10px;
+    line-height: 1.3;
+  }
+
+  .places-map-mobile-selected-info > span em {
+    color: #527464;
+    font-style: normal;
+    font-weight: 850;
+  }
+
+  .places-map-mobile-selected-info > span b {
+    color: #a0a6a2;
+    font-weight: 700;
+  }
+
+  .places-map-mobile-selected-info > strong {
+    display: block;
+    overflow: hidden;
+    color: #263b33;
+    font-size: 16px;
+    line-height: 1.35;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .places-map-mobile-selected-info > p {
+    display: -webkit-box;
+    overflow: hidden;
+    margin: 6px 0 0;
+    color: #737d78;
+    font-size: 11px;
+    line-height: 1.5;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .places-map-mobile-selected-arrow {
+    width: 28px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #315e4e;
   }
 }
