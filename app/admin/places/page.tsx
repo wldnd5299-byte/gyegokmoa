@@ -10,6 +10,7 @@ import {
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import BulkPublishControls from "./BulkPublishControls";
 
 type AdminPlacesPageProps = {
   searchParams: Promise<{
@@ -1071,6 +1072,10 @@ export default async function AdminPlacesPage({
               </p>
             </div>
 
+            {!placesError && (places ?? []).some((place) => !place.is_published) && (
+              <BulkPublishControls />
+            )}
+
             {placesError ? (
               <p>
                 장소 목록을 불러오지
@@ -1106,7 +1111,34 @@ export default async function AdminPlacesPage({
                         borderRadius: "13px",
                       }}
                     >
-                      <div>
+                      {!place.is_published && (
+                        <label
+                          title="공개할 장소 선택"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flex: "0 0 auto",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            name="place_ids"
+                            value={place.id}
+                            form="bulk-publish-form"
+                            data-bulk-place-checkbox="true"
+                            aria-label={`${place.name} 선택`}
+                            style={{
+                              width: "18px",
+                              height: "18px",
+                              cursor: "pointer",
+                            }}
+                          />
+                        </label>
+                      )}
+
+                      <div style={{ flex: "1 1 220px" }}>
                         <div
                           style={{
                             display: "flex",
@@ -1180,27 +1212,6 @@ export default async function AdminPlacesPage({
       ? "공개"
       : "비공개"}
   </span>
-
-  <a
-    href={`/admin/places/${place.slug}/edit`}
-    style={{
-      display: "inline-flex",
-      alignItems: "center",
-      justifyContent: "center",
-      minHeight: "36px",
-      padding: "0 13px",
-      border: "1px solid #07866c",
-      borderRadius: "9px",
-      background: "#ffffff",
-      color: "#07866c",
-      fontSize: "12px",
-      fontWeight: 800,
-      textDecoration: "none",
-      whiteSpace: "nowrap",
-    }}
-  >
-    정보 수정
-  </a>
 
   <form
     action="/api/admin/places/image"
