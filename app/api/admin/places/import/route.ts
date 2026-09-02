@@ -703,8 +703,6 @@ export async function POST(
         recommendation_score:
           0,
 
-        created_by:
-          user.id,
       })
     );
 
