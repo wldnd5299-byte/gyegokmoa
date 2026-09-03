@@ -49,6 +49,9 @@ type PlaceFilter =
 
 interface PlaceMapExplorerProps {
   places: PlaceMapItem[];
+  initialFilter?: MapPlaceType;
+  initialSearch?: string;
+  initialPlaceSlug?: string;
 }
 
 type SearchSuggestion =
@@ -340,22 +343,27 @@ function formatDistance(
 
 export default function PlaceMapExplorer({
   places,
+  initialFilter,
+  initialSearch = "",
+  initialPlaceSlug = "",
 }: PlaceMapExplorerProps) {
   const [
     selectedFilter,
     setSelectedFilter,
   ] =
-    useState<PlaceFilter>("all");
+    useState<PlaceFilter>(
+      initialFilter ?? "all"
+    );
 
   const [
     searchInput,
     setSearchInput,
-  ] = useState("");
+  ] = useState(initialSearch);
 
   const [
     appliedSearch,
     setAppliedSearch,
-  ] = useState("");
+  ] = useState(initialSearch);
 
   const [
     selectedRegionTarget,
@@ -385,11 +393,21 @@ export default function PlaceMapExplorer({
   const addressSearchRequestRef =
     useRef(0);
 
+  const initialSelectedPlace =
+    initialPlaceSlug
+      ? places.find(
+          (place) =>
+            place.slug ===
+            initialPlaceSlug
+        ) || null
+      : null;
+
   const [
     selectedPlaceId,
     setSelectedPlaceId,
   ] = useState<string | number | null>(
-    null
+    initialSelectedPlace?.id ??
+      null
   );
 
   const [
@@ -437,6 +455,93 @@ export default function PlaceMapExplorer({
         })
       );
     }, [places]);
+
+  useEffect(() => {
+    if (initialPlaceSlug) {
+      const directPlace =
+        searchablePlaces.find(
+          (place) =>
+            place.slug ===
+            initialPlaceSlug
+        );
+
+      if (directPlace) {
+        setSelectedClusterPlaceIds(
+          []
+        );
+        setSelectedPlaceId(
+          directPlace.id
+        );
+        setSelectedFilter(
+          directPlace.place_type
+        );
+        setSearchInput(
+          directPlace.name
+        );
+        setAppliedSearch(
+          directPlace.name
+        );
+        setSelectedRegionTarget(
+          null
+        );
+        setFreeRegionSearch("");
+        return;
+      }
+    }
+
+    const input =
+      initialSearch.trim();
+
+    if (!input) {
+      return;
+    }
+
+    const normalized =
+      normalizeSearchText(input);
+
+    const exactPlace =
+      searchablePlaces.find(
+        (place) =>
+          normalizeSearchText(
+            place.name
+          ) === normalized
+      );
+
+    if (exactPlace) {
+      setSelectedClusterPlaceIds(
+        []
+      );
+      setSelectedPlaceId(
+        exactPlace.id
+      );
+      return;
+    }
+
+    const region =
+      REGION_SEARCH_ITEMS.find(
+        (item) =>
+          item.aliases.some(
+            (alias) =>
+              normalizeSearchText(
+                alias
+              ) === normalized
+          ) ||
+          normalizeSearchText(
+            item.label
+          ) === normalized
+      );
+
+    if (region) {
+      setSelectedRegionTarget(
+        region
+      );
+      setFreeRegionSearch("");
+    }
+  }, [
+    initialSearch,
+    initialPlaceSlug,
+    searchablePlaces,
+  ]);
 
   useEffect(() => {
     const input =
