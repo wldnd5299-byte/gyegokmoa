@@ -393,6 +393,13 @@ export default function PlaceMapExplorer({
   );
 
   const [
+    selectedClusterPlaceIds,
+    setSelectedClusterPlaceIds,
+  ] = useState<
+    Array<string | number>
+  >([]);
+
+  const [
     currentLocation,
     setCurrentLocation,
   ] = useState<{
@@ -1153,6 +1160,36 @@ export default function PlaceMapExplorer({
       ]
     );
 
+  const selectedClusterPlaces =
+    useMemo(
+      () => {
+        if (
+          selectedClusterPlaceIds.length <
+          2
+        ) {
+          return [];
+        }
+
+        const selectedIds =
+          new Set(
+            selectedClusterPlaceIds.map(
+              String
+            )
+          );
+
+        return filteredPlaces.filter(
+          (place) =>
+            selectedIds.has(
+              String(place.id)
+            )
+        );
+      },
+      [
+        filteredPlaces,
+        selectedClusterPlaceIds,
+      ]
+    );
+
   useEffect(() => {
     if (
       selectedPlaceId === null
@@ -1177,6 +1214,27 @@ export default function PlaceMapExplorer({
   }, [
     filteredPlaces,
     selectedPlaceId,
+  ]);
+
+  useEffect(() => {
+    if (
+      selectedClusterPlaceIds.length ===
+      0
+    ) {
+      return;
+    }
+
+    if (
+      selectedClusterPlaces.length <
+      2
+    ) {
+      setSelectedClusterPlaceIds(
+        []
+      );
+    }
+  }, [
+    selectedClusterPlaceIds,
+    selectedClusterPlaces,
   ]);
 
   useEffect(() => {
@@ -1324,6 +1382,9 @@ export default function PlaceMapExplorer({
     setSelectedPlaceId(
       null
     );
+    setSelectedClusterPlaceIds(
+      []
+    );
 
     setSearchOpen(
       false
@@ -1465,6 +1526,9 @@ export default function PlaceMapExplorer({
     setSelectedPlaceId(
       null
     );
+    setSelectedClusterPlaceIds(
+      []
+    );
 
     setSearchOpen(
       false
@@ -1497,6 +1561,9 @@ export default function PlaceMapExplorer({
 
     setSelectedPlaceId(
       null
+    );
+    setSelectedClusterPlaceIds(
+      []
     );
 
     setSearchOpen(
@@ -1532,8 +1599,26 @@ export default function PlaceMapExplorer({
   const selectPlace = (
     placeId: string | number
   ) => {
+    setSelectedClusterPlaceIds(
+      []
+    );
+
     setSelectedPlaceId(
       placeId
+    );
+  };
+
+  const selectCluster = (
+    placeIds: Array<
+      string | number
+    >
+  ) => {
+    setSelectedPlaceId(
+      null
+    );
+
+    setSelectedClusterPlaceIds(
+      placeIds
     );
   };
 
@@ -2064,6 +2149,12 @@ export default function PlaceMapExplorer({
                 onSelectPlace={
                   selectPlace
                 }
+                selectedClusterPlaceIds={
+                  selectedClusterPlaceIds
+                }
+                onSelectCluster={
+                  selectCluster
+                }
                 focusLocation={
                   mapFocusLocation
                 }
@@ -2077,7 +2168,128 @@ export default function PlaceMapExplorer({
               />
 
 
-              {selectedPlace && (
+              {selectedClusterPlaces.length >=
+              2 ? (
+                <div
+                  className="places-map-mobile-cluster-sheet"
+                  role="region"
+                  aria-label={`${selectedClusterPlaces.length}개 장소`}
+                >
+                  <div className="places-map-mobile-sheet-handle" />
+
+                  <div className="places-map-mobile-cluster-heading">
+                    <div>
+                      <span className="places-map-mobile-cluster-count">
+                        {
+                          selectedClusterPlaces.length
+                        }
+                      </span>
+
+                      <div>
+                        <strong>
+                          {
+                            selectedClusterPlaces.length
+                          }
+                          개의 장소
+                        </strong>
+
+                        <p>
+                          가까이 있는 장소를 모아봤어요.
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setSelectedClusterPlaceIds(
+                          []
+                        )
+                      }
+                      aria-label="장소 목록 닫기"
+                    >
+                      <X
+                        size={19}
+                        aria-hidden="true"
+                      />
+                    </button>
+                  </div>
+
+                  <div className="places-map-mobile-cluster-list">
+                    {selectedClusterPlaces.map(
+                      (place) => (
+                        <Link
+                          key={String(
+                            place.id
+                          )}
+                          href={`/places/${place.slug}`}
+                          className="places-map-mobile-cluster-item"
+                        >
+                          <div
+                            className="places-map-mobile-cluster-thumb"
+                            style={{
+                              backgroundImage: `url("${
+                                place.image_url ||
+                                "/main-valley.jpg"
+                              }")`,
+                            }}
+                          />
+
+                          <div className="places-map-mobile-cluster-info">
+                            <strong>
+                              {
+                                place.name
+                              }
+                            </strong>
+
+                            <span>
+                              {getTypeLabel(
+                                place.place_type
+                              )}
+                              {" · "}
+                              {
+                                place.region
+                              }{" "}
+                              {
+                                place.city
+                              }
+
+                              {currentLocation && (
+                                <>
+                                  {" · "}
+                                  <em>
+                                    {formatDistance(
+                                      getDistanceKm(
+                                        currentLocation,
+                                        {
+                                          latitude:
+                                            place.latitude,
+                                          longitude:
+                                            place.longitude,
+                                        }
+                                      )
+                                    )}
+                                  </em>
+                                </>
+                              )}
+                            </span>
+
+                            <p>
+                              {place.summary ||
+                                "부모님과 함께 둘러보기 좋은 장소입니다."}
+                            </p>
+                          </div>
+
+                          <ChevronRight
+                            size={19}
+                            aria-hidden="true"
+                          />
+                        </Link>
+                      )
+                    )}
+                  </div>
+                </div>
+              ) : selectedPlace ? (
                 <Link
                   href={`/places/${selectedPlace.slug}`}
                   className="places-map-mobile-selected-card"
@@ -2147,7 +2359,7 @@ export default function PlaceMapExplorer({
                     />
                   </span>
                 </Link>
-              )}
+              ) : null}
             </div>
           </div>
         </div>

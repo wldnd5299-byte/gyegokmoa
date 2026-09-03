@@ -62,6 +62,16 @@ interface KakaoMapProps {
       | number
   ) => void;
 
+  selectedClusterPlaceIds?: Array<
+    string | number
+  >;
+
+  onSelectCluster?: (
+    placeIds: Array<
+      string | number
+    >
+  ) => void;
+
   focusLocation?:
     | MapFocusLocation
     | null;
@@ -172,12 +182,209 @@ function getMarkerIconSvg(
   }
 }
 
+
+function sameIdSet(
+  left: Array<string | number>,
+  right: Array<string | number>
+) {
+  if (left.length !== right.length) {
+    return false;
+  }
+
+  const rightSet = new Set(
+    right.map(String)
+  );
+
+  return left.every((id) =>
+    rightSet.has(String(id))
+  );
+}
+
+function getDistanceMeters(
+  a: MapPlace,
+  b: MapPlace
+) {
+  const earthRadius =
+    6371000;
+
+  const toRadians = (
+    value: number
+  ) =>
+    (value * Math.PI) /
+    180;
+
+  const lat1 =
+    toRadians(
+      a.latitude
+    );
+
+  const lat2 =
+    toRadians(
+      b.latitude
+    );
+
+  const deltaLat =
+    toRadians(
+      b.latitude -
+        a.latitude
+    );
+
+  const deltaLng =
+    toRadians(
+      b.longitude -
+        a.longitude
+    );
+
+  const sinLat =
+    Math.sin(
+      deltaLat / 2
+    );
+
+  const sinLng =
+    Math.sin(
+      deltaLng / 2
+    );
+
+  const haversine =
+    sinLat * sinLat +
+    Math.cos(lat1) *
+      Math.cos(lat2) *
+      sinLng *
+      sinLng;
+
+  return (
+    2 *
+    earthRadius *
+    Math.asin(
+      Math.min(
+        1,
+        Math.sqrt(
+          haversine
+        )
+      )
+    )
+  );
+}
+
+function buildDistanceClusters(
+  places: MapPlace[],
+  thresholdMeters: number
+): MapPlace[][] {
+  if (
+    places.length <= 1
+  ) {
+    return places.map(
+      (place) => [place]
+    );
+  }
+
+  const parent =
+    places.map(
+      (_, index) =>
+        index
+    );
+
+  const find = (
+    value: number
+  ): number => {
+    if (
+      parent[value] !==
+      value
+    ) {
+      parent[value] =
+        find(
+          parent[value]
+        );
+    }
+
+    return parent[value];
+  };
+
+  const union = (
+    a: number,
+    b: number
+  ) => {
+    const rootA =
+      find(a);
+
+    const rootB =
+      find(b);
+
+    if (
+      rootA !==
+      rootB
+    ) {
+      parent[rootB] =
+        rootA;
+    }
+  };
+
+  for (
+    let a = 0;
+    a < places.length;
+    a += 1
+  ) {
+    for (
+      let b = a + 1;
+      b < places.length;
+      b += 1
+    ) {
+      if (
+        getDistanceMeters(
+          places[a],
+          places[b]
+        ) <=
+        thresholdMeters
+      ) {
+        union(a, b);
+      }
+    }
+  }
+
+  const groups =
+    new Map<
+      number,
+      MapPlace[]
+    >();
+
+  places.forEach(
+    (
+      place,
+      index
+    ) => {
+      const root =
+        find(index);
+
+      const group =
+        groups.get(root) ||
+        [];
+
+      group.push(
+        place
+      );
+
+      groups.set(
+        root,
+        group
+      );
+    }
+  );
+
+  return Array.from(
+    groups.values()
+  );
+}
+
 export default function KakaoMap({
   places,
 
   selectedPlaceId = null,
 
   onSelectPlace,
+
+  selectedClusterPlaceIds = [],
+
+  onSelectCluster,
 
   focusLocation = null,
 
@@ -398,6 +605,11 @@ export default function KakaoMap({
 
   /*
    * 장소 마커 그리기
+   *
+   * 모바일 일반 지도:
+   * 서로 가까운 장소는 숫자 클러스터로 묶습니다.
+   * 현재 지도 확대 단계 + 실제 거리(m)를 기준으로
+   * 확대할수록 자동으로 개별 마커로 풀립니다.
    */
   const renderPlaceMarkers =
     useCallback(
@@ -424,9 +636,17 @@ export default function KakaoMap({
           new window.kakao.maps
             .LatLngBounds();
 
+        places.forEach((place) => {
+          bounds.extend(
+            new window.kakao.maps.LatLng(
+              place.latitude,
+              place.longitude
+            )
+          );
+        });
+
         /*
-         * 코스 모드에서는 카카오 길찾기 API가 반환한
-         * 실제 자동차 도로 경로를 구간별로 그립니다.
+         * 추천코스 실제 도로 경로
          */
         if (
           courseMode &&
@@ -455,24 +675,215 @@ export default function KakaoMap({
               });
 
             routeLine.setMap(map);
-            courseLinesRef.current.push(routeLine);
+            courseLinesRef.current.push(
+              routeLine
+            );
           });
         }
 
-        places.forEach(
+        const isMobile =
+          !courseMode &&
+          window.matchMedia(
+            "(max-width: 760px)"
+          ).matches;
+
+        const mapLevel =
+          typeof map.getLevel ===
+          "function"
+            ? map.getLevel()
+            : 6;
+
+        /*
+         * 실제 거리 기준 모바일 클러스터
+         *
+         * 카카오맵은 숫자가 작을수록 확대된 상태입니다.
+         * 멀리 볼 때는 넓게 묶고,
+         * 확대할수록 기준 거리를 줄여
+         * 자연스럽게 개별 마커로 풀립니다.
+         */
+        const clusterThresholdMeters =
+          mapLevel >= 10
+            ? 4200
+            : mapLevel === 9
+              ? 2600
+              : mapLevel === 8
+                ? 1500
+                : mapLevel === 7
+                  ? 850
+                  : mapLevel === 6
+                    ? 450
+                    : mapLevel === 5
+                      ? 220
+                      : mapLevel === 4
+                        ? 110
+                        : 55;
+
+        const groups =
+          isMobile
+            ? buildDistanceClusters(
+                places,
+                clusterThresholdMeters
+              )
+            : places.map(
+                (place) => [
+                  place,
+                ]
+              );
+
+        groups.forEach(
           (
-            place,
-            index
+            group,
+            groupIndex
           ) => {
+            /*
+             * 2곳 이상이면 숫자 클러스터
+             */
+            if (
+              !courseMode &&
+              group.length >= 2
+            ) {
+              const latitude =
+                group.reduce(
+                  (sum, place) =>
+                    sum +
+                    place.latitude,
+                  0
+                ) / group.length;
+
+              const longitude =
+                group.reduce(
+                  (sum, place) =>
+                    sum +
+                    place.longitude,
+                  0
+                ) / group.length;
+
+              const position =
+                new window.kakao.maps.LatLng(
+                  latitude,
+                  longitude
+                );
+
+              const clusterIds =
+                group.map(
+                  (place) => place.id
+                );
+
+              const isClusterSelected =
+                sameIdSet(
+                  clusterIds,
+                  selectedClusterPlaceIds
+                );
+
+              const clusterButton =
+                document.createElement(
+                  "button"
+                );
+
+              clusterButton.type =
+                "button";
+
+              clusterButton.setAttribute(
+                "aria-label",
+                `${group.length}개 장소 보기`
+              );
+
+              clusterButton.textContent =
+                String(group.length);
+
+              clusterButton.style.cssText = `
+                width: ${
+                  isClusterSelected
+                    ? 34
+                    : 30
+                }px;
+                height: ${
+                  isClusterSelected
+                    ? 34
+                    : 30
+                }px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+                border: 3px solid #ffffff;
+                border-radius: 50%;
+                background: ${
+                  isClusterSelected
+                    ? "#173f34"
+                    : "#315e4e"
+                };
+                color: #ffffff;
+                box-shadow:
+                  0 4px 13px
+                  rgba(0, 0, 0, .24);
+                font-size: ${
+                  isClusterSelected
+                    ? 14
+                    : 13
+                }px;
+                font-weight: 900;
+                line-height: 1;
+                cursor: pointer;
+                outline: ${
+                  isClusterSelected
+                    ? "4px solid rgba(49,94,78,.18)"
+                    : "none"
+                };
+                outline-offset: 2px;
+                transition:
+                  width .15s ease,
+                  height .15s ease,
+                  background .15s ease,
+                  outline .15s ease;
+              `;
+
+              clusterButton.addEventListener(
+                "click",
+                () => {
+                  onSelectCluster?.(
+                    clusterIds
+                  );
+                }
+              );
+
+              const overlay =
+                new window.kakao.maps
+                  .CustomOverlay({
+                    position,
+                    content:
+                      clusterButton,
+                    yAnchor: 0.5,
+                    zIndex:
+                      isClusterSelected
+                        ? 12
+                        : 7,
+                  });
+
+              overlay.setMap(map);
+
+              overlaysRef.current.push(
+                overlay
+              );
+
+              return;
+            }
+
+            const place =
+              group[0];
+
+            const index =
+              places.findIndex(
+                (candidate) =>
+                  String(candidate.id) ===
+                  String(place.id)
+              );
+
             const position =
               new window.kakao.maps.LatLng(
                 place.latitude,
                 place.longitude
               );
-
-            bounds.extend(
-              position
-            );
 
             const color =
               TYPE_COLORS[
@@ -482,9 +893,7 @@ export default function KakaoMap({
             const isSelected =
               selectedPlaceId !==
                 null &&
-              String(
-                place.id
-              ) ===
+              String(place.id) ===
                 String(
                   selectedPlaceId
                 );
@@ -504,9 +913,6 @@ export default function KakaoMap({
                 : `${place.name} 선택`
             );
 
-            /*
-             * 공통 마커 형태
-             */
             markerContent.style.cssText = `
               width: ${
                 courseMode
@@ -514,8 +920,8 @@ export default function KakaoMap({
                     ? 44
                     : 40
                   : isSelected
-                    ? 34
-                    : 28
+                    ? 22
+                    : 18
               }px;
 
               height: ${
@@ -524,14 +930,13 @@ export default function KakaoMap({
                     ? 44
                     : 40
                   : isSelected
-                    ? 34
-                    : 28
+                    ? 22
+                    : 18
               }px;
 
               display: flex;
               align-items: center;
               justify-content: center;
-
               padding: 0;
 
               border: ${
@@ -548,11 +953,19 @@ export default function KakaoMap({
                 ${
                   courseMode
                     ? "50%"
-                    : "50% 50% 50% 0"
+                    : isSelected
+                      ? "50%"
+                      : "50% 50% 50% 0"
                 };
 
               background:
-                ${color};
+                ${
+                  courseMode
+                    ? color
+                    : isSelected
+                      ? "#173f34"
+                      : color
+                };
 
               box-shadow:
                 0 ${
@@ -580,24 +993,30 @@ export default function KakaoMap({
                 ${
                   courseMode
                     ? "none"
-                    : "rotate(-45deg)"
+                    : isSelected
+                      ? "none"
+                      : "rotate(-45deg)"
+                };
+
+              outline:
+                ${
+                  !courseMode &&
+                  isSelected
+                    ? "3px solid rgba(23, 63, 52, 0.20)"
+                    : "none"
+                };
+
+              outline-offset:
+                ${
+                  !courseMode &&
+                  isSelected
+                    ? "2px"
+                    : "0"
                 };
 
               cursor: pointer;
-
-              transition:
-                width .15s ease,
-                height .15s ease,
-                box-shadow .15s ease;
             `;
 
-            /*
-             * 추천코스:
-             * 숫자 마커
-             *
-             * 일반 지도:
-             * 기존 장소 아이콘
-             */
             if (
               courseMode
             ) {
@@ -636,39 +1055,122 @@ export default function KakaoMap({
                 markerSvg.setAttribute(
                   "width",
                   isSelected
-                    ? "16"
-                    : "14"
+                    ? "12"
+                    : "10"
                 );
 
                 markerSvg.setAttribute(
                   "height",
                   isSelected
-                    ? "16"
-                    : "14"
+                    ? "12"
+                    : "10"
                 );
+
+                markerSvg.style.transform =
+                  isSelected
+                    ? "none"
+                    : "rotate(45deg)";
               }
+            }
+
+            const markerWrapper =
+              document.createElement(
+                "div"
+              );
+
+            markerWrapper.style.cssText = `
+              position: relative;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+            `;
+
+            markerWrapper.appendChild(
+              markerContent
+            );
+
+            /*
+             * 일반 지도 장소명:
+             * 글자 크기는 유지하되 지도 위에서 잘 보이도록
+             * 작은 반투명 흰 배경만 사용합니다.
+             */
+            if (!courseMode) {
+              const markerName =
+                document.createElement(
+                  "span"
+                );
+
+              markerName.textContent =
+                place.name;
+
+              markerName.style.cssText = `
+                position: absolute;
+                top: calc(100% + 5px);
+                left: 50%;
+                transform: translateX(-50%);
+                max-width: 118px;
+                padding: 2px 5px;
+                margin: 0;
+                border: 0;
+                border-radius: 5px;
+                background:
+                  rgba(
+                    255,
+                    255,
+                    255,
+                    .90
+                  );
+                box-shadow:
+                  0 1px 4px
+                  rgba(
+                    0,
+                    0,
+                    0,
+                    .08
+                  );
+                color: ${
+                  isSelected
+                    ? "#173f34"
+                    : "#36413d"
+                };
+                font-size: ${
+                  isSelected
+                    ? 10
+                    : 9
+                }px;
+                font-weight: ${
+                  isSelected
+                    ? 900
+                    : 800
+                };
+                line-height: 1.25;
+                letter-spacing: -0.2px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                pointer-events: none;
+              `;
+
+              markerWrapper.appendChild(
+                markerName
+              );
             }
 
             const markerOverlay =
               new window.kakao.maps
-                .CustomOverlay(
-                  {
-                    position,
-
-                    content:
-                      markerContent,
-
-                    yAnchor:
-                      courseMode
-                        ? 0.5
-                        : 1,
-
-                    zIndex:
-                      isSelected
-                        ? 8
-                        : 5,
-                  }
-                );
+                .CustomOverlay({
+                  position,
+                  content:
+                    markerWrapper,
+                  yAnchor:
+                    courseMode
+                      ? 0.5
+                      : 1,
+                  zIndex:
+                    isSelected
+                      ? 8
+                      : 5,
+                });
 
             markerOverlay.setMap(
               map
@@ -679,149 +1181,114 @@ export default function KakaoMap({
             );
 
             /*
-             * 마커 hover 안내
+             * 추천코스에서만 hover 안내.
+             * 일반 지도에는 상단 흰 말풍선을 만들지 않습니다.
              */
-            const infoContent =
-              document.createElement(
-                "div"
-              );
-
-            infoContent.style.cssText = `
-              min-width: 120px;
-
-              padding: 9px 12px;
-
-              border:
-                1px solid
-                rgba(
-                  0,
-                  0,
-                  0,
-                  0.08
+            if (
+              courseMode === true
+            ) {
+              const infoContent =
+                document.createElement(
+                  "div"
                 );
 
-              border-radius: 10px;
+              infoContent.style.cssText = `
+                min-width: 120px;
+                padding: 9px 12px;
+                border:
+                  1px solid
+                  rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                  );
+                border-radius: 10px;
+                background: #ffffff;
+                box-shadow:
+                  0 5px 18px
+                  rgba(
+                    0,
+                    0,
+                    0,
+                    0.13
+                  );
+                text-align: center;
+                white-space: nowrap;
+                pointer-events: none;
+              `;
 
-              background:
-                #ffffff;
-
-              box-shadow:
-                0 5px 18px
-                rgba(
-                  0,
-                  0,
-                  0,
-                  0.13
+              const typeText =
+                document.createElement(
+                  "span"
                 );
 
-              text-align: center;
-
-              white-space:
-                nowrap;
-
-              pointer-events:
-                none;
-            `;
-
-            const typeText =
-              document.createElement(
-                "span"
-              );
-
-            typeText.textContent =
-              courseMode
-                ? `${index + 1}번째 · ${
-                    TYPE_LABELS[
-                      place.place_type
-                    ]
-                  }`
-                : TYPE_LABELS[
+              typeText.textContent =
+                `${index + 1}번째 · ${
+                  TYPE_LABELS[
                     place.place_type
-                  ];
+                  ]
+                }`;
 
-            typeText.style.cssText = `
-              display: block;
+              typeText.style.cssText = `
+                display: block;
+                margin-bottom: 3px;
+                color: ${color};
+                font-size: 10px;
+                font-weight: 800;
+              `;
 
-              margin-bottom:
-                3px;
+              const nameText =
+                document.createElement(
+                  "strong"
+                );
 
-              color:
-                ${color};
+              nameText.textContent =
+                place.name;
 
-              font-size:
-                10px;
+              nameText.style.cssText = `
+                display: block;
+                color: #24352e;
+                font-size: 13px;
+                font-weight: 800;
+              `;
 
-              font-weight:
-                800;
-            `;
-
-            const nameText =
-              document.createElement(
-                "strong"
+              infoContent.appendChild(
+                typeText
               );
 
-            nameText.textContent =
-              place.name;
+              infoContent.appendChild(
+                nameText
+              );
 
-            nameText.style.cssText = `
-              display: block;
-
-              color:
-                #24352e;
-
-              font-size:
-                13px;
-
-              font-weight:
-                800;
-            `;
-
-            infoContent.appendChild(
-              typeText
-            );
-
-            infoContent.appendChild(
-              nameText
-            );
-
-            const infoOverlay =
-              new window.kakao.maps
-                .CustomOverlay(
-                  {
+              const infoOverlay =
+                new window.kakao.maps
+                  .CustomOverlay({
                     position,
-
                     content:
                       infoContent,
+                    yAnchor: 1.35,
+                    zIndex: 20,
+                  });
 
-                    yAnchor:
-                      courseMode
-                        ? 1.35
-                        : isSelected
-                          ? 2.35
-                          : 2.15,
+              markerContent.addEventListener(
+                "mouseenter",
+                () => {
+                  infoOverlay.setMap(
+                    map
+                  );
+                }
+              );
 
-                    zIndex:
-                      20,
-                  }
-                );
-
-            markerContent.addEventListener(
-              "mouseenter",
-              () => {
-                infoOverlay.setMap(
-                  map
-                );
-              }
-            );
-
-            markerContent.addEventListener(
-              "mouseleave",
-              () => {
-                infoOverlay.setMap(
-                  null
-                );
-              }
-            );
+              markerContent.addEventListener(
+                "mouseleave",
+                () => {
+                  infoOverlay.setMap(
+                    null
+                  );
+                }
+              );
+            }
 
             markerContent.addEventListener(
               "click",
@@ -830,11 +1297,6 @@ export default function KakaoMap({
                   place.id
                 );
 
-                /*
-                 * 일반 장소 지도에서는 마커를 눌러도
-                 * 현재 지도 중심/확대 수준을 그대로 유지합니다.
-                 * 추천코스 지도만 기존 동작을 유지합니다.
-                 */
                 if (courseMode) {
                   map.panTo(
                     position
@@ -855,10 +1317,8 @@ export default function KakaoMap({
         );
 
         /*
-         * 일반 장소 지도에서는 장소 목록 자체가 바뀔 때만
-         * 전체 장소가 보이도록 지도를 맞춥니다.
-         * 마커 선택(selectedPlaceId 변경)만으로는
-         * 지도 중심이나 확대 수준을 바꾸지 않습니다.
+         * 장소 구성 자체가 바뀐 경우에만 자동 맞춤.
+         * 선택/클러스터 선택만으로는 지도 중심/확대를 바꾸지 않습니다.
          */
         const placesSignature =
           places
@@ -882,10 +1342,6 @@ export default function KakaoMap({
           return;
         }
 
-        /*
-         * 장소가 2개 이상이면
-         * 전체가 보이도록
-         */
         if (
           places.length >=
           2
@@ -897,9 +1353,6 @@ export default function KakaoMap({
           return;
         }
 
-        /*
-         * 한 곳만 있을 때
-         */
         if (
           places.length ===
           1
@@ -908,7 +1361,6 @@ export default function KakaoMap({
             new window.kakao.maps.LatLng(
               places[0]
                 .latitude,
-
               places[0]
                 .longitude
             )
@@ -922,12 +1374,55 @@ export default function KakaoMap({
       [
         places,
         selectedPlaceId,
+        selectedClusterPlaceIds,
         onSelectPlace,
+        onSelectCluster,
         clearPlaceMarkers,
         courseMode,
         courseRoutePaths,
       ]
     );
+
+  /*
+   * 모바일 클러스터는 확대/축소·이동 후
+   * 현재 지도 확대 단계에 맞는 실제 거리 기준으로
+   * 다시 계산합니다.
+   */
+  useEffect(() => {
+    if (
+      courseMode ||
+      !mapRef.current ||
+      !window.kakao?.maps
+    ) {
+      return;
+    }
+
+    const map =
+      mapRef.current;
+
+    const rerender = () => {
+      renderPlaceMarkers(
+        map
+      );
+    };
+
+    window.kakao.maps.event.addListener(
+      map,
+      "idle",
+      rerender
+    );
+
+    return () => {
+      window.kakao.maps.event.removeListener(
+        map,
+        "idle",
+        rerender
+      );
+    };
+  }, [
+    courseMode,
+    renderPlaceMarkers,
+  ]);
 
   /*
    * 전체 보기

@@ -729,35 +729,6 @@ export default async function PlaceDetailPage({
                 </div>
               )}
 
-              <div className="place-hero-actions">
-                <Link
-                  href={
-                    internalMapUrl
-                  }
-                  className="place-primary-button"
-                >
-                  <MapPin
-                    size={17}
-                  />
-                  사이트 지도에서 보기
-                </Link>
-
-                {place.website_url && (
-                  <a
-                    href={
-                      place.website_url
-                    }
-                    target="_blank"
-                    rel="noreferrer"
-                    className="place-secondary-button"
-                  >
-                    <Globe
-                      size={17}
-                    />
-                    홈페이지
-                  </a>
-                )}
-              </div>
             </div>
           </div>
         </div>
