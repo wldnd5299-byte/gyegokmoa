@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import {
+  ArrowLeft,
   BedDouble,
   ChevronRight,
   Coffee,
@@ -1252,7 +1253,7 @@ export default function PlaceMapExplorer({
       () =>
         selectedPlaceId === null
           ? null
-          : filteredPlaces.find(
+          : places.find(
               (place) =>
                 String(place.id) ===
                 String(
@@ -1260,7 +1261,7 @@ export default function PlaceMapExplorer({
                 )
             ) || null,
       [
-        filteredPlaces,
+        places,
         selectedPlaceId,
       ]
     );
@@ -1345,6 +1346,15 @@ export default function PlaceMapExplorer({
   useEffect(() => {
     if (
       selectedPlaceId === null
+    ) {
+      return;
+    }
+
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia(
+        "(max-width: 760px)"
+      ).matches
     ) {
       return;
     }
@@ -2056,6 +2066,160 @@ export default function PlaceMapExplorer({
 
           <div className="places-map-split">
             <aside className="places-map-sidebar">
+              <div className="places-map-desktop-toolbar">
+                <form
+                  className="places-map-desktop-search"
+                  onSubmit={handleSubmit}
+                >
+                  <Search
+                    size={18}
+                    aria-hidden="true"
+                  />
+
+                  <input
+                    type="text"
+                    value={searchInput}
+                    onChange={(event) => {
+                      setSearchInput(
+                        event.target.value
+                      );
+                      setSearchOpen(true);
+                    }}
+                    onFocus={() =>
+                      setSearchOpen(true)
+                    }
+                    placeholder="지역·장소를 검색해보세요"
+                    aria-label="지역 또는 장소 검색"
+                    autoComplete="off"
+                  />
+
+                  {searchInput && (
+                    <button
+                      type="button"
+                      className="places-map-desktop-search-clear"
+                      onClick={clearSearch}
+                      aria-label="검색어 지우기"
+                    >
+                      <X
+                        size={15}
+                        aria-hidden="true"
+                      />
+                    </button>
+                  )}
+
+                  {searchOpen &&
+                    suggestions.length > 0 && (
+                      <div className="places-map-desktop-suggestions">
+                        {suggestions.map(
+                          (
+                            suggestion,
+                            index
+                          ) => (
+                            <button
+                              key={`${suggestion.kind}-${suggestion.label}-${index}`}
+                              type="button"
+                              onClick={() => {
+                                if (
+                                  suggestion.kind ===
+                                  "region"
+                                ) {
+                                  applyRegionSearch(
+                                    suggestion.region
+                                  );
+                                } else if (
+                                  suggestion.kind ===
+                                  "address"
+                                ) {
+                                  applyAddressSearch(
+                                    suggestion
+                                  );
+                                } else {
+                                  applySearch(
+                                    suggestion.query
+                                  );
+                                  setSelectedClusterPlaceIds(
+                                    []
+                                  );
+                                  setSelectedPlaceId(
+                                    suggestion.placeId
+                                  );
+                                }
+                              }}
+                            >
+                              <span>
+                                <strong>
+                                  {
+                                    suggestion.label
+                                  }
+                                </strong>
+                                <small>
+                                  {
+                                    suggestion.meta
+                                  }
+                                </small>
+                              </span>
+                            </button>
+                          )
+                        )}
+                      </div>
+                    )}
+                </form>
+
+                <div
+                  className="places-map-desktop-categories"
+                  role="group"
+                  aria-label="장소 유형 선택"
+                >
+                  {FILTERS.map((filter) => {
+                    const isActive =
+                      selectedFilter ===
+                      filter.value;
+
+                    return (
+                      <button
+                        key={filter.value}
+                        type="button"
+                        onClick={() => {
+                          setSelectedFilter(
+                            filter.value
+                          );
+                          setSelectedClusterPlaceIds(
+                            []
+                          );
+                        }}
+                        className={
+                          isActive
+                            ? "active"
+                            : ""
+                        }
+                        aria-pressed={
+                          isActive
+                        }
+                      >
+                        <FilterIcon
+                          type={
+                            filter.value
+                          }
+                        />
+                        <span>
+                          {
+                            filter.value ===
+                            "all"
+                              ? "전체"
+                              : filter.label
+                          }
+                        </span>
+                        <b>
+                          {getFilterCount(
+                            filter.value
+                          )}
+                        </b>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               <div className="places-map-sidebar-heading">
                 <div>
                   <span>
@@ -2244,6 +2408,200 @@ export default function PlaceMapExplorer({
             </aside>
 
             <div className="places-map-map-column">
+              <div className="places-map-mobile-floating-ui">
+                <div className="places-map-mobile-topbar">
+                  <Link
+                    href="/"
+                    className="places-map-mobile-back"
+                    aria-label="홈으로 돌아가기"
+                  >
+                    <ArrowLeft
+                      size={22}
+                      aria-hidden="true"
+                    />
+                  </Link>
+
+                  <form
+                    className="places-map-mobile-search"
+                    onSubmit={handleSubmit}
+                  >
+                    <Search
+                      size={19}
+                      aria-hidden="true"
+                    />
+
+                    <input
+                      type="text"
+                      value={searchInput}
+                      onChange={(event) => {
+                        setSearchInput(
+                          event.target.value
+                        );
+                        setSearchOpen(true);
+                      }}
+                      onFocus={() =>
+                        setSearchOpen(true)
+                      }
+                      placeholder="어디로 떠나볼까요?"
+                      aria-label="지역 또는 장소 검색"
+                      autoComplete="off"
+                    />
+
+                    {searchInput && (
+                      <button
+                        type="button"
+                        className="places-map-mobile-search-clear"
+                        onClick={clearSearch}
+                        aria-label="검색어 지우기"
+                      >
+                        <X
+                          size={16}
+                          aria-hidden="true"
+                        />
+                      </button>
+                    )}
+
+                    {searchOpen &&
+                      suggestions.length > 0 && (
+                        <div className="places-map-mobile-suggestions">
+                          {suggestions.map(
+                            (
+                              suggestion,
+                              index
+                            ) => (
+                              <button
+                                key={`${suggestion.kind}-${suggestion.label}-${index}`}
+                                type="button"
+                                onClick={() => {
+                                  if (
+                                    suggestion.kind ===
+                                    "region"
+                                  ) {
+                                    applyRegionSearch(
+                                      suggestion.region
+                                    );
+                                  } else if (
+                                    suggestion.kind ===
+                                    "address"
+                                  ) {
+                                    applyAddressSearch(
+                                      suggestion
+                                    );
+                                  } else {
+                                    applySearch(
+                                      suggestion.query
+                                    );
+                                    setSelectedClusterPlaceIds(
+                                      []
+                                    );
+                                    setSelectedPlaceId(
+                                      suggestion.placeId
+                                    );
+                                  }
+                                }}
+                              >
+                                <span className="places-map-mobile-suggestion-icon">
+                                  {suggestion.kind ===
+                                  "place" ? (
+                                    <MapPin
+                                      size={14}
+                                      aria-hidden="true"
+                                    />
+                                  ) : (
+                                    <Search
+                                      size={14}
+                                      aria-hidden="true"
+                                    />
+                                  )}
+                                </span>
+
+                                <span>
+                                  <strong>
+                                    {
+                                      suggestion.label
+                                    }
+                                  </strong>
+                                  <small>
+                                    {
+                                      suggestion.meta
+                                    }
+                                  </small>
+                                </span>
+                              </button>
+                            )
+                          )}
+                        </div>
+                      )}
+                  </form>
+                </div>
+
+                <div
+                  className="places-map-mobile-side-categories"
+                  role="group"
+                  aria-label="장소 카테고리"
+                >
+                  {FILTERS.map((filter) => {
+                    const isActive =
+                      selectedFilter ===
+                      filter.value;
+
+                    const mobileLabel =
+                      filter.value === "all"
+                        ? "전체"
+                        : filter.value ===
+                            "attraction"
+                          ? "갈곳"
+                          : filter.label;
+
+                    return (
+                      <button
+                        key={filter.value}
+                        type="button"
+                        className={[
+                          "places-map-mobile-side-category",
+                          `is-${filter.value}`,
+                          isActive
+                            ? "active"
+                            : "",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                        aria-pressed={
+                          isActive
+                        }
+                        onClick={() => {
+                          setSelectedFilter(
+                            filter.value
+                          );
+                          setSelectedClusterPlaceIds(
+                            []
+                          );
+                        }}
+                      >
+                        <span className="places-map-mobile-side-icon">
+                          <FilterIcon
+                            type={
+                              filter.value
+                            }
+                          />
+                        </span>
+
+                        <span>
+                          {mobileLabel}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="places-map-mobile-result-count">
+                  <strong>
+                    {filteredPlaces.length}
+                  </strong>
+                  곳
+                </div>
+              </div>
+
               <KakaoMap
                 places={
                   mapPlaces

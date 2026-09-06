@@ -120,54 +120,55 @@ const TYPE_COLORS: Record<
   MapPlaceType,
   string
 > = {
+  // 조합 ②
   attraction:
-    "#3f725d",
+    "#E9A23B",
 
   restaurant:
-    "#c87548",
+    "#D95C59",
 
   cafe:
-    "#8b674f",
+    "#8B6652",
 
   accommodation:
-    "#557b91",
+    "#527DAA",
 };
 
 function getMarkerIconSvg(
   type: MapPlaceType
 ) {
   const common =
-    `width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"`;
+    `width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round"`;
 
   switch (type) {
     case "restaurant":
       return `
         <svg ${common} aria-hidden="true">
-          <path d="M3 2v7c0 1.7 1.3 3 3 3V2" />
-          <path d="M6 12v10" />
-          <path d="M15 2v8" />
-          <path d="M15 6c3 0 5-1.8 5-4v20" />
+          <path d="M4 2v8" />
+          <path d="M8 2v8" />
+          <path d="M4 6h4" />
+          <path d="M6 10v12" />
+          <path d="M15 2v20" />
+          <path d="M15 2c3.2 0 5 2.2 5 5v4h-5" />
         </svg>
       `;
 
     case "cafe":
       return `
         <svg ${common} aria-hidden="true">
-          <path d="M3 8h13v7a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+          <path d="M3 8h13v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5Z" />
           <path d="M16 10h2a3 3 0 0 1 0 6h-2" />
-          <path d="M6 2v2" />
-          <path d="M10 2v2" />
-          <path d="M14 2v2" />
+          <path d="M3 21h16" />
         </svg>
       `;
 
     case "accommodation":
       return `
         <svg ${common} aria-hidden="true">
-          <path d="M3 11h18v8H3z" />
-          <path d="M5 11V7h6a3 3 0 0 1 3 3v1" />
-          <path d="M3 19v2" />
-          <path d="M21 19v2" />
+          <path d="M3 5v16" />
+          <path d="M3 14h18v7" />
+          <path d="M6 10h5a3 3 0 0 1 3 3v1H6Z" />
+          <path d="M21 12v9" />
         </svg>
       `;
 
@@ -175,13 +176,12 @@ function getMarkerIconSvg(
     default:
       return `
         <svg ${common} aria-hidden="true">
-          <path d="M12 21s6-5.1 6-11a6 6 0 1 0-12 0c0 5.9 6 11 6 11Z" />
-          <circle cx="12" cy="10" r="2.2" />
+          <path d="m3 18 6.2-9 3.1 4.2 2.2-3.1L21 18Z" />
+          <path d="M7.7 11.2 9.2 9l1.6 2.2" />
         </svg>
       `;
   }
 }
-
 
 function sameIdSet(
   left: Array<string | number>,
@@ -959,13 +959,7 @@ export default function KakaoMap({
                 };
 
               background:
-                ${
-                  courseMode
-                    ? color
-                    : isSelected
-                      ? "#173f34"
-                      : color
-                };
+                ${color};
 
               box-shadow:
                 0 ${
@@ -1002,7 +996,7 @@ export default function KakaoMap({
                 ${
                   !courseMode &&
                   isSelected
-                    ? "3px solid rgba(23, 63, 52, 0.20)"
+                    ? `3px solid ${color}33`
                     : "none"
                 };
 
@@ -1130,7 +1124,7 @@ export default function KakaoMap({
                   );
                 color: ${
                   isSelected
-                    ? "#173f34"
+                    ? color
                     : "#36413d"
                 };
                 font-size: ${
