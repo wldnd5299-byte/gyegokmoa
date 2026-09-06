@@ -2187,11 +2187,14 @@ export default function PlaceMapExplorer({
                             []
                           );
                         }}
-                        className={
+                        className={[
+                          `is-${filter.value}`,
                           isActive
                             ? "active"
-                            : ""
-                        }
+                            : "",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
                         aria-pressed={
                           isActive
                         }

@@ -5899,11 +5899,11 @@ body:has(.places-map-page-v2) .footer {
     gap: 8px !important;
   }
 
-  .parent-site-header .parent-flight-logo {
-    width: 46px !important;
-    height: 34px !important;
-    flex: 0 0 46px !important;
-    transform: none !important;
+  .parent-site-header .parent-brand-symbol {
+    width: 36px !important;
+    height: 32px !important;
+    transform: scale(.88);
+    transform-origin: center;
   }
 
   .parent-site-header .parent-brand-text strong {
@@ -6493,82 +6493,28 @@ body:has(.places-map-page-v2) .footer {
   }
 }
 
+/* =========================================================
+   HOME MOBILE HERO TEXT FINAL - 2026-09-06
+   - 상단 문구: 함께한 오늘, 오래도록
+   - 메인 제목 모바일 한 줄
+   - 설명 문구 삭제 후 간격 정리
+   ========================================================= */
+@media (max-width: 760px) {
+  .parent-home .parent-hero-kicker {
+    margin-bottom: 12px !important;
+  }
 
-/* ==================================================
-   HEADER LOGO V6 - HEART FLIGHT
-   Header.tsx의 SVG 로고 전용 스타일
-================================================== */
+  .parent-home .parent-hero-copy h1 {
+    font-size: 21px !important;
+    line-height: 1.2 !important;
+    letter-spacing: -1.2px !important;
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+  }
 
-.parent-site-header .parent-flight-logo {
-  display: block;
-  width: 58px;
-  height: 42px;
-  flex: 0 0 58px;
-  overflow: visible;
-}
-
-.parent-site-header .parent-flight-heart-line {
-  fill: none;
-  stroke: #234f40;
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.parent-site-header .parent-flight-plane {
-  fill: #b47a4a;
-}
-
-.parent-site-header .parent-brand-text span {
-  color: #9a6a43;
-  font-weight: 600;
-}
-
-@media (max-width: 600px) {
-  .parent-site-header .parent-flight-logo {
-    width: 46px !important;
-    height: 34px !important;
-    flex: 0 0 46px !important;
-    transform: none !important;
+  .parent-home .parent-hero-search,
+  .parent-home .parent-hero-search-autocomplete {
+    margin-top: 20px !important;
   }
 }
-/* ==================================================
-   HEADER LOGO V7 - MOUNTAIN / SUN / ROAD
-================================================== */
 
-.parent-site-header .parent-landscape-logo {
-  width: 62px !important;
-  height: 40px !important;
-  flex: 0 0 62px !important;
-  overflow: visible;
-}
-
-.parent-site-header .parent-landscape-mountain,
-.parent-site-header .parent-landscape-road {
-  fill: none;
-  stroke: #234f40;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.parent-site-header .parent-landscape-mountain {
-  stroke-width: 3.2;
-}
-
-.parent-site-header .parent-landscape-road {
-  stroke-width: 2.6;
-}
-
-.parent-site-header .parent-landscape-sun {
-  fill: none;
-  stroke: #b47a4a;
-  stroke-width: 3.2;
-}
-
-@media (max-width: 600px) {
-  .parent-site-header .parent-landscape-logo {
-    width: 54px !important;
-    height: 35px !important;
-    flex: 0 0 54px !important;
-  }
-}

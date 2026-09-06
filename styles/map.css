@@ -3049,3 +3049,164 @@
     grid-template-columns: 420px minmax(0, 1fr);
   }
 }
+
+
+/* =========================================================
+   CATEGORY COLORS = KAKAO MARKER PALETTE ②
+   실제 지도 마커와 카테고리 선택색 완전 동기화
+   attraction   #E9A23B
+   restaurant   #D95C59
+   cafe         #8B6652
+   accommodation #527DAA
+   ========================================================= */
+
+/* ---------- 예전/공통 가로 카테고리 ---------- */
+.map-category-button.map-category-all.active {
+  border-color: #315e4e;
+  background: #315e4e;
+  color: #ffffff;
+}
+
+.map-category-button.map-category-attraction {
+  color: #E9A23B;
+}
+.map-category-button.map-category-attraction.active {
+  border-color: #E9A23B;
+  background: #E9A23B;
+  color: #ffffff;
+}
+
+.map-category-button.map-category-restaurant {
+  color: #D95C59;
+}
+.map-category-button.map-category-restaurant.active {
+  border-color: #D95C59;
+  background: #D95C59;
+  color: #ffffff;
+}
+
+.map-category-button.map-category-cafe {
+  color: #8B6652;
+}
+.map-category-button.map-category-cafe.active {
+  border-color: #8B6652;
+  background: #8B6652;
+  color: #ffffff;
+}
+
+.map-category-button.map-category-accommodation {
+  color: #527DAA;
+}
+.map-category-button.map-category-accommodation.active {
+  border-color: #527DAA;
+  background: #527DAA;
+  color: #ffffff;
+}
+
+.map-category-button.active .map-category-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+/* ---------- PC 전체화면 지도 왼쪽 카테고리 ---------- */
+@media (min-width: 761px) {
+  .places-map-desktop-categories > button.is-all.active {
+    border-color: #315e4e;
+    background: #315e4e;
+    color: #ffffff;
+  }
+
+  .places-map-desktop-categories > button.is-attraction {
+    color: #E9A23B;
+  }
+  .places-map-desktop-categories > button.is-attraction.active {
+    border-color: #E9A23B;
+    background: #E9A23B;
+    color: #ffffff;
+  }
+
+  .places-map-desktop-categories > button.is-restaurant {
+    color: #D95C59;
+  }
+  .places-map-desktop-categories > button.is-restaurant.active {
+    border-color: #D95C59;
+    background: #D95C59;
+    color: #ffffff;
+  }
+
+  .places-map-desktop-categories > button.is-cafe {
+    color: #8B6652;
+  }
+  .places-map-desktop-categories > button.is-cafe.active {
+    border-color: #8B6652;
+    background: #8B6652;
+    color: #ffffff;
+  }
+
+  .places-map-desktop-categories > button.is-accommodation {
+    color: #527DAA;
+  }
+  .places-map-desktop-categories > button.is-accommodation.active {
+    border-color: #527DAA;
+    background: #527DAA;
+    color: #ffffff;
+  }
+
+  .places-map-desktop-categories > button.active b {
+    color: rgba(255, 255, 255, 0.88);
+  }
+}
+
+/* ---------- 모바일 전체화면 지도 우측 카테고리 ---------- */
+@media (max-width: 760px) {
+  .places-map-mobile-side-category.is-all.active {
+    background: #f0f5f2;
+    color: #315e4e;
+  }
+  .places-map-mobile-side-category.is-all.active
+    .places-map-mobile-side-icon {
+    background: #315e4e;
+    color: #ffffff;
+  }
+
+  .places-map-mobile-side-category.is-attraction.active {
+    background: rgba(233, 162, 59, 0.10);
+    color: #E9A23B;
+  }
+  .places-map-mobile-side-category.is-attraction.active
+    .places-map-mobile-side-icon {
+    background: #E9A23B;
+    color: #ffffff;
+  }
+
+  .places-map-mobile-side-category.is-restaurant.active {
+    background: rgba(217, 92, 89, 0.10);
+    color: #D95C59;
+  }
+  .places-map-mobile-side-category.is-restaurant.active
+    .places-map-mobile-side-icon {
+    background: #D95C59;
+    color: #ffffff;
+  }
+
+  .places-map-mobile-side-category.is-cafe.active {
+    background: rgba(139, 102, 82, 0.10);
+    color: #8B6652;
+  }
+  .places-map-mobile-side-category.is-cafe.active
+    .places-map-mobile-side-icon {
+    background: #8B6652;
+    color: #ffffff;
+  }
+
+  .places-map-mobile-side-category.is-accommodation.active {
+    background: rgba(82, 125, 170, 0.10);
+    color: #527DAA;
+  }
+  .places-map-mobile-side-category.is-accommodation.active
+    .places-map-mobile-side-icon {
+    background: #527DAA;
+    color: #ffffff;
+  }
+}
+

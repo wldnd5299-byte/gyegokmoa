@@ -42,18 +42,12 @@ export default async function Home() {
         <div className="container parent-hero-inner">
           <div className="parent-hero-copy">
             <span className="parent-hero-kicker">
-              함께 걷는 길, 더 가까워지는 마음
+              함께한 오늘, 오래도록
             </span>
 
             <h1>
-              부모님과 함께하는{" "}
-              <span className="parent-hero-title-break" />
-              <em>소중한 시간</em>
+              부모님과 함께하는 <em>소중한 시간</em>
             </h1>
-
-            <p>
-              좋은 장소에서 나누는 따뜻한 순간이 오래도록 기억에 남을 추억이 됩니다.
-            </p>
 
             <SearchAutocomplete
               places={places}
