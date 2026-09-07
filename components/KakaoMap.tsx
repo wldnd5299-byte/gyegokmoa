@@ -76,6 +76,8 @@ interface KakaoMapProps {
     | MapFocusLocation
     | null;
 
+  viewportFitKey?: string;
+
   onCurrentLocation?: (
     location: {
       latitude: number;
@@ -387,6 +389,7 @@ export default function KakaoMap({
   onSelectCluster,
 
   focusLocation = null,
+  viewportFitKey = "",
 
   onCurrentLocation,
 
@@ -437,12 +440,13 @@ export default function KakaoMap({
     );
 
   /*
-   * 일반 장소 지도에서 장소 선택만으로
-   * 사용자가 보고 있던 지도 위치/확대 수준이
-   * 바뀌지 않도록 마지막 장소 구성을 기억합니다.
+   * 일반 장소 지도에서 카테고리만 변경했을 때는
+   * 사용자가 보고 있던 지도 위치/확대 수준을 그대로 유지합니다.
+   * 검색/검색초기화처럼 viewportFitKey가 바뀌는 경우에만
+   * 현재 결과 범위에 맞춰 지도를 이동합니다.
    */
-  const lastPlacesSignatureRef =
-    useRef("");
+  const lastViewportFitKeyRef =
+    useRef<string | null>(null);
 
   const [
     mapError,
@@ -1311,25 +1315,21 @@ export default function KakaoMap({
         );
 
         /*
-         * 장소 구성 자체가 바뀐 경우에만 자동 맞춤.
-         * 선택/클러스터 선택만으로는 지도 중심/확대를 바꾸지 않습니다.
+         * 핵심 동작
+         * - 카테고리 변경: 마커만 필터링하고 현재 지도 위치/확대 유지
+         * - 검색/검색초기화: viewportFitKey가 바뀌면 결과 범위에 맞춤
+         * - 추천코스 지도: 기존처럼 항상 경로 범위에 맞춤
          */
-        const placesSignature =
-          places
-            .map(
-              (place) =>
-                `${place.id}:${place.latitude}:${place.longitude}`
-            )
-            .join("|");
-
         const shouldFitPlaces =
           courseMode ||
-          lastPlacesSignatureRef.current !==
-            placesSignature;
+          lastViewportFitKeyRef.current ===
+            null ||
+          lastViewportFitKeyRef.current !==
+            viewportFitKey;
 
         if (!courseMode) {
-          lastPlacesSignatureRef.current =
-            placesSignature;
+          lastViewportFitKeyRef.current =
+            viewportFitKey;
         }
 
         if (!shouldFitPlaces) {
@@ -1374,6 +1374,7 @@ export default function KakaoMap({
         clearPlaceMarkers,
         courseMode,
         courseRoutePaths,
+        viewportFitKey,
       ]
     );
 
