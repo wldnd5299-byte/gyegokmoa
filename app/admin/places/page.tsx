@@ -11,11 +11,14 @@ import {
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import BulkPublishControls from "./BulkPublishControls";
+import AutoSubmitImageForm from "./AutoSubmitImageForm";
 
 type AdminPlacesPageProps = {
   searchParams: Promise<{
     success?: string | string[];
     error?: string | string[];
+    photos?: string | string[];
+    q?: string | string[];
   }>;
 };
 
@@ -50,6 +53,22 @@ export default async function AdminPlacesPage({
   const errorMessage = getMessage(
     params.error
   );
+
+  const photoFilter = getMessage(
+    params.photos
+  );
+
+  const showMissingPhotosOnly =
+    photoFilter === "missing";
+
+  const searchQuery = (
+    getMessage(params.q) ?? ""
+  ).trim();
+
+  const normalizedSearchQuery =
+    searchQuery
+      .toLowerCase()
+      .replace(/\s+/g, "");
 
   const supabase = await createClient();
 
@@ -114,6 +133,43 @@ export default async function AdminPlacesPage({
     .order("sort_order", {
       ascending: true,
     });
+
+  const allPlaces = places ?? [];
+
+  const photoFilteredPlaces =
+    showMissingPhotosOnly
+      ? allPlaces.filter(
+          (place) => !place.image_url
+        )
+      : allPlaces;
+
+  const displayedPlaces =
+    normalizedSearchQuery
+      ? photoFilteredPlaces.filter(
+          (place) => {
+            const searchableText = [
+              place.name,
+              place.slug,
+              place.region,
+              place.city,
+              place.address,
+            ]
+              .filter(Boolean)
+              .join(" ")
+              .toLowerCase()
+              .replace(/\s+/g, "");
+
+            return searchableText.includes(
+              normalizedSearchQuery
+            );
+          }
+        )
+      : photoFilteredPlaces;
+
+  const missingPhotoCount =
+    allPlaces.filter(
+      (place) => !place.image_url
+    ).length;
 
   return (
     <main
@@ -1061,18 +1117,159 @@ export default async function AdminPlacesPage({
               >
                 등록된 장소
               </h2>
-
-              <p
+              <div
                 style={{
-                  margin: 0,
-                  color: "#6c7b76",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  flexWrap: "wrap",
                 }}
               >
-                총 {places?.length ?? 0}개
-              </p>
+                <p
+                  style={{
+                    margin: 0,
+                    color: "#6c7b76",
+                  }}
+                >
+                  {showMissingPhotosOnly
+                    ? `대표사진 미등록 ${displayedPlaces.length}개 / 전체 ${allPlaces.length}개`
+                    : `총 ${allPlaces.length}개`}
+                </p>
+
+                <a
+                  href={
+                    showMissingPhotosOnly
+                      ? searchQuery
+                        ? `/admin/places?q=${encodeURIComponent(searchQuery)}`
+                        : "/admin/places"
+                      : searchQuery
+                        ? `/admin/places?photos=missing&q=${encodeURIComponent(searchQuery)}`
+                        : "/admin/places?photos=missing"
+                  }
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    minHeight: "34px",
+                    padding: "0 12px",
+                    borderRadius: "999px",
+                    border: "1px solid #07866c",
+                    background: showMissingPhotosOnly
+                      ? "#07866c"
+                      : "#ffffff",
+                    color: showMissingPhotosOnly
+                      ? "#ffffff"
+                      : "#07866c",
+                    fontSize: "12px",
+                    fontWeight: 800,
+                    textDecoration: "none",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {showMissingPhotosOnly
+                    ? "전체 장소 보기"
+                    : `대표사진 미등록만 보기 (${missingPhotoCount})`}
+                </a>
+              </div>
+
+              <form
+                action="/admin/places"
+                method="get"
+                style={{
+                  display: "flex",
+                  gap: "8px",
+                  marginTop: "16px",
+                  maxWidth: "620px",
+                }}
+              >
+                {showMissingPhotosOnly && (
+                  <input
+                    type="hidden"
+                    name="photos"
+                    value="missing"
+                  />
+                )}
+
+                <input
+                  type="search"
+                  name="q"
+                  defaultValue={searchQuery}
+                  placeholder="장소명, 지역, 주소로 검색"
+                  aria-label="등록된 장소 검색"
+                  style={{
+                    flex: 1,
+                    minWidth: 0,
+                    minHeight: "44px",
+                    padding: "0 14px",
+                    border: "1px solid #cfdcd7",
+                    borderRadius: "11px",
+                    background: "#ffffff",
+                    color: "#173f36",
+                    fontSize: "14px",
+                    outline: "none",
+                  }}
+                />
+
+                <button
+                  type="submit"
+                  style={{
+                    minHeight: "44px",
+                    padding: "0 18px",
+                    border: 0,
+                    borderRadius: "11px",
+                    background: "#173f36",
+                    color: "#ffffff",
+                    fontSize: "13px",
+                    fontWeight: 800,
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  장소 검색
+                </button>
+
+                {searchQuery && (
+                  <a
+                    href={
+                      showMissingPhotosOnly
+                        ? "/admin/places?photos=missing"
+                        : "/admin/places"
+                    }
+                    style={{
+                      minHeight: "44px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "0 14px",
+                      border: "1px solid #cfdcd7",
+                      borderRadius: "11px",
+                      background: "#ffffff",
+                      color: "#687873",
+                      fontSize: "13px",
+                      fontWeight: 800,
+                      textDecoration: "none",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    초기화
+                  </a>
+                )}
+              </form>
+
+              {searchQuery && (
+                <p
+                  style={{
+                    margin: "10px 0 0",
+                    color: "#687873",
+                    fontSize: "13px",
+                  }}
+                >
+                  “{searchQuery}” 검색 결과 {displayedPlaces.length}개
+                </p>
+              )}
             </div>
 
-            {!placesError && (places ?? []).some((place) => !place.is_published) && (
+            {!placesError && displayedPlaces.some((place) => !place.is_published) && (
               <BulkPublishControls />
             )}
 
@@ -1088,7 +1285,7 @@ export default async function AdminPlacesPage({
                   gap: "12px",
                 }}
               >
-                {(places ?? []).map(
+                {displayedPlaces.map(
   (place) => {
     const photosForPlace =
       (placePhotos ?? []).filter(
@@ -1148,9 +1345,16 @@ export default async function AdminPlacesPage({
                             flexWrap: "wrap",
                           }}
                         >
-                          <strong>
+                          <a
+                            href={`/admin/places/${place.slug}/edit`}
+                            style={{
+                              color: "#173f36",
+                              fontWeight: 850,
+                              textDecoration: "none",
+                            }}
+                          >
                             {place.name}
-                          </strong>
+                          </a>
 
                           <span
                             style={{
@@ -1213,54 +1417,31 @@ export default async function AdminPlacesPage({
       : "비공개"}
   </span>
 
-  <form
-    action="/api/admin/places/image"
-    method="post"
-    encType="multipart/form-data"
+  <a
+    href={`/admin/places/${place.slug}/edit`}
     style={{
-      display: "flex",
+      minHeight: "36px",
+      display: "inline-flex",
       alignItems: "center",
-      gap: "8px",
-      flexWrap: "wrap",
+      justifyContent: "center",
+      padding: "0 12px",
+      border: "1px solid #07866c",
+      borderRadius: "9px",
+      background: "#ffffff",
+      color: "#07866c",
+      fontSize: "12px",
+      fontWeight: 800,
+      textDecoration: "none",
+      whiteSpace: "nowrap",
     }}
   >
-    <input
-      type="hidden"
-      name="slug"
-      value={place.slug}
-    />
+    정보 수정
+  </a>
 
-    <input
-      type="file"
-      name="image"
-      accept="image/jpeg,image/png,image/webp"
-      required
-      style={{
-        maxWidth: "220px",
-        fontSize: "12px",
-      }}
-    />
-
-    <button
-      type="submit"
-      style={{
-        minHeight: "36px",
-        padding: "0 12px",
-        border: 0,
-        borderRadius: "9px",
-        background: "#245c4f",
-        color: "#ffffff",
-        fontSize: "12px",
-        fontWeight: 800,
-        cursor: "pointer",
-        whiteSpace: "nowrap",
-      }}
-    >
-      {place.image_url
-        ? "대표사진 교체"
-        : "대표사진 등록"}
-    </button>
-  </form>
+  <AutoSubmitImageForm
+    slug={place.slug}
+    hasImage={Boolean(place.image_url)}
+  />
   <form
   action="/api/admin/places/gallery"
   method="post"
