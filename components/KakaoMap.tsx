@@ -1693,6 +1693,25 @@ export default function KakaoMap({
       );
     };
 
+    /*
+     * 시·도 / 시·군·구처럼 이미 대표 좌표가 있는 검색은
+     * 주소 지오코딩 결과보다 저장된 행정지역 좌표를 우선합니다.
+     * 주소검색의 첫 결과가 다른 장소를 가리키는 문제를 방지합니다.
+     */
+    if (
+      typeof focusLocation.latitude ===
+        "number" &&
+      typeof focusLocation.longitude ===
+        "number"
+    ) {
+      moveMap(
+        focusLocation.latitude,
+        focusLocation.longitude
+      );
+
+      return;
+    }
+
     if (
       focusLocation.address &&
       window.kakao.maps

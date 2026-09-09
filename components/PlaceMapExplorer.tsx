@@ -1553,7 +1553,40 @@ export default function PlaceMapExplorer({
     }
 
     /*
-     * 2. 읍·면·동 주소 후보가 있으면
+     * 2. 입력값과 정확히 일치하는 시·도 / 시·군·구가 있으면
+     *    비동기로 생성된 주소 후보보다 행정지역 검색을 우선 처리합니다.
+     *    예: "양주시" 입력 후 Enter → 반드시 양주시 중심으로 이동
+     */
+    const exactRegionSuggestion =
+      suggestions.find(
+        (
+          suggestion
+        ): suggestion is Extract<
+          SearchSuggestion,
+          { kind: "region" }
+        > =>
+          suggestion.kind === "region" &&
+          (normalizeSearchText(
+            suggestion.label
+          ) === normalizedInput ||
+            suggestion.region.aliases.some(
+              (alias) =>
+                normalizeSearchText(
+                  alias
+                ) === normalizedInput
+            ))
+      );
+
+    if (exactRegionSuggestion) {
+      applyRegionSearch(
+        exactRegionSuggestion.region
+      );
+
+      return;
+    }
+
+    /*
+     * 3. 읍·면·동 주소 후보가 있으면
      *    자동완성을 클릭한 것과 동일하게 처리
      */
     const addressSuggestion =
@@ -1576,7 +1609,7 @@ export default function PlaceMapExplorer({
     }
 
     /*
-     * 3. 시·도 / 시·군·구 검색 후보가 있으면
+     * 4. 부분 일치하는 시·도 / 시·군·구 검색 후보가 있으면
      *    해당 행정지역으로 이동
      */
     const regionSuggestion =
@@ -1599,7 +1632,7 @@ export default function PlaceMapExplorer({
     }
 
     /*
-     * 4. 자동완성 후보가 없는 일반 검색어
+     * 5. 자동완성 후보가 없는 일반 검색어
      */
     applySearch(input);
   };
